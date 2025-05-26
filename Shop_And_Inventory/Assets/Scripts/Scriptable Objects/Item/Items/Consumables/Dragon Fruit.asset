@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Dragon Fruit
   m_EditorClassIdentifier: 
   itemName: Dragon Fruit
+  itemClassification: Fruit
   itemType: 3
   itemRarity: 2
   icon: {fileID: -593124809, guid: eccc70a5990ed0e4a8175308f27bd9c2, type: 3}

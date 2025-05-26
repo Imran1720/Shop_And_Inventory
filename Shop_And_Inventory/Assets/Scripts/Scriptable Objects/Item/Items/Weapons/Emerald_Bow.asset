@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Emerald_Bow
   m_EditorClassIdentifier: 
   itemName: Emerald Bow
+  itemClassification: Bow
   itemType: 1
   itemRarity: 3
   icon: {fileID: -1074202682, guid: 135e92076422eff4b80f010bdece60a2, type: 3}

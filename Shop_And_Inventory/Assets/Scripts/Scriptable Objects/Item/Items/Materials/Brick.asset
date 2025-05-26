@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Brick
   m_EditorClassIdentifier: 
   itemName: Brick
+  itemClassification: Brick
   itemType: 0
   itemRarity: 0
   icon: {fileID: 21300000, guid: 4ea68be36b74d3e45ad002d17abbcfdc, type: 3}

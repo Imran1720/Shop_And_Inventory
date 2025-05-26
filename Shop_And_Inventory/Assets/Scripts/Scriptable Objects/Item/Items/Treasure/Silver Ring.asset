@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Silver Ring
   m_EditorClassIdentifier: 
   itemName: Silver Ring
+  itemClassification: Ring
   itemType: 2
   itemRarity: 1
   icon: {fileID: 21300000, guid: 437d75df09e837e4491d4165f8255662, type: 3}

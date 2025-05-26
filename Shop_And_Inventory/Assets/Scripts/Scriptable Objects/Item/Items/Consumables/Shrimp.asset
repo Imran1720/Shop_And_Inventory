@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Shrimp
   m_EditorClassIdentifier: 
   itemName: Shrimp
+  itemClassification: Sea Food
   itemType: 3
   itemRarity: 1
   icon: {fileID: 1713019930, guid: eccc70a5990ed0e4a8175308f27bd9c2, type: 3}

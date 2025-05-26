@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Bloody Butterfly
   m_EditorClassIdentifier: 
   itemName: Bloody Butterfly
+  itemClassification: Butterfly
   itemType: 0
   itemRarity: 2
   icon: {fileID: 1007820332, guid: 6a377e4f9855c234289dc6c4441b3f08, type: 3}

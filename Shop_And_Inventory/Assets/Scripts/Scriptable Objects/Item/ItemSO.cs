@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class ItemSO : ScriptableObject
 {
     public string itemName;
+    public string itemClassification;
     public ItemType itemType;
     public Rarity itemRarity;
     public Sprite icon;

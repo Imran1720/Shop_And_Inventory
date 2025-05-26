@@ -32,6 +32,6 @@ public class Item : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-
+        ItemCardHandler.Instance.SetItem(currentItemData);
     }
 }

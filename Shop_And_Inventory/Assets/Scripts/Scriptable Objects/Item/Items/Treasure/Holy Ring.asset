@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Holy Ring
   m_EditorClassIdentifier: 
   itemName: Holy Ring
+  itemClassification: Ring
   itemType: 2
   itemRarity: 3
   icon: {fileID: 21300000, guid: c3b98865534e45945aa17f3db5acd83f, type: 3}

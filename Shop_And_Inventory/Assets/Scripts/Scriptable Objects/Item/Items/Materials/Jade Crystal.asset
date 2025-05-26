@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Jade Crystal
   m_EditorClassIdentifier: 
   itemName: Jade Crystal
+  itemClassification: Crystal
   itemType: 0
   itemRarity: 4
   icon: {fileID: 21300000, guid: d02879dece70e1744840ac48c1480b1b, type: 3}

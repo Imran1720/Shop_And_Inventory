@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Emerald_Sword 1
   m_EditorClassIdentifier: 
   itemName: Emerald Sword
+  itemClassification: Sword
   itemType: 1
   itemRarity: 3
   icon: {fileID: 1923139089, guid: 135e92076422eff4b80f010bdece60a2, type: 3}

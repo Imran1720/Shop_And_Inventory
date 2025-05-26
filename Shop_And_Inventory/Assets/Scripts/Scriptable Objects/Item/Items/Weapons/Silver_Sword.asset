@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Silver_Sword
   m_EditorClassIdentifier: 
   itemName: Silver Sword
+  itemClassification: Sword
   itemType: 1
   itemRarity: 2
   icon: {fileID: -901622265, guid: 135e92076422eff4b80f010bdece60a2, type: 3}

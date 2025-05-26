@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Wooden_Rod
   m_EditorClassIdentifier: 
   itemName: Wooden Rod
+  itemClassification: Rod
   itemType: 1
   itemRarity: 0
   icon: {fileID: -1795524903, guid: 135e92076422eff4b80f010bdece60a2, type: 3}

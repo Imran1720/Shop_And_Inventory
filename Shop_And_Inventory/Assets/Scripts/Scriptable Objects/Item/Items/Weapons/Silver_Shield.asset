@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba632be6af003c41a2b984bedd55fe5, type: 3}
   m_Name: Silver_Shield
   m_EditorClassIdentifier: 
-  itemName: Silver Sield
+  itemName: Silver Shield
+  itemClassification: Shield
   itemType: 1
   itemRarity: 2
   icon: {fileID: -1731322715, guid: 135e92076422eff4b80f010bdece60a2, type: 3}

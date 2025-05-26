@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Steak
   m_EditorClassIdentifier: 
   itemName: Steak
+  itemClassification: Meat
   itemType: 3
   itemRarity: 1
   icon: {fileID: -754971538, guid: eccc70a5990ed0e4a8175308f27bd9c2, type: 3}

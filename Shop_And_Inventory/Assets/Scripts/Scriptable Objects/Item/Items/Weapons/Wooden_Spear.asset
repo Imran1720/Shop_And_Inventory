@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Wooden_Spear
   m_EditorClassIdentifier: 
   itemName: Wooden Spear
+  itemClassification: Spear
   itemType: 1
   itemRarity: 0
   icon: {fileID: 65748117, guid: 135e92076422eff4b80f010bdece60a2, type: 3}

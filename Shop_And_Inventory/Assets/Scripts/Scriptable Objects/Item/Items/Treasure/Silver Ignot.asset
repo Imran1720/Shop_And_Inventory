@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Silver Ignot
   m_EditorClassIdentifier: 
   itemName: Silver Ignot
+  itemClassification: Ignot
   itemType: 2
   itemRarity: 0
   icon: {fileID: 21300000, guid: bd1e7155b236a96448a1ac0f5f34d63f, type: 3}

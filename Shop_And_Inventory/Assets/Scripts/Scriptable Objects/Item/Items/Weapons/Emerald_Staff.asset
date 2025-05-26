@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Emerald_Staff
   m_EditorClassIdentifier: 
   itemName: Emerald Staff
+  itemClassification: Staff
   itemType: 1
   itemRarity: 3
   icon: {fileID: -1350983093, guid: 135e92076422eff4b80f010bdece60a2, type: 3}

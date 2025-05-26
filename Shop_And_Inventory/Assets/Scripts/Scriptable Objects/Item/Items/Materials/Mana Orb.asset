@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Mana Orb
   m_EditorClassIdentifier: 
   itemName: Mana Orb
+  itemClassification: Orb
   itemType: 0
   itemRarity: 3
   icon: {fileID: 1785739185, guid: 6a377e4f9855c234289dc6c4441b3f08, type: 3}
