@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "Item", menuName = "ScriptableObject/Item")]
+[CreateAssetMenu(menuName = "ScriptableObject/Item", fileName = "Item")]
 public class ItemSO : ScriptableObject
 {
     public string itemName;
     public ItemType itemType;
     public Rarity itemRarity;
     public Sprite icon;
-    public int buyingPrixe;
+    public int buyingPrice;
     public int sellingPrice;
     public int weight;
     public int quantity;

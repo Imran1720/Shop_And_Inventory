@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba632be6af003c41a2b984bedd55fe5, type: 3}
+  m_Name: Dragon Fruit
+  m_EditorClassIdentifier: 
+  itemName: Dragon Fruit
+  itemType: 3
+  itemRarity: 2
+  icon: {fileID: -593124809, guid: eccc70a5990ed0e4a8175308f27bd9c2, type: 3}
+  buyingPrice: 10
+  sellingPrice: 3
+  weight: 4
+  quantity: 2
+  description: A fruit filled with mana of Dragon!!
