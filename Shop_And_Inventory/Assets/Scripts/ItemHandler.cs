@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,16 +26,21 @@ public class ItemHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UpdateItemDataList();
         timer = shopRefreshTime;
+        UpdateItemDataList();
+        AddButtonListeners();
+
+        CreateItems();
+
+    }
+
+    private void AddButtonListeners()
+    {
         weaponFilterButton.onClick.AddListener(ShowOnlyWeapons);
         consumableFilterButton.onClick.AddListener(ShowOnlyConsumables);
         treasureFilterButton.onClick.AddListener(ShowOnlyTreasure);
         materialFilterButton.onClick.AddListener(ShowOnlyMaterial);
         allFilterButton.onClick.AddListener(ShowAllItems);
-
-        CreateItems();
-
     }
 
     private void Update()
@@ -65,32 +68,37 @@ public class ItemHandler : MonoBehaviour
     }
     private void CreateItems()
     {
-        int currentItemsInShop = 0;
-        for (int i = 0; i < itemsDataList.Count; i++)
+        for (int i = 0; i < initialShopItemCount; i++)
         {
-            if (currentItemsInShop >= initialShopItemCount)
-            {
-                break;
-            }
-            GameObject currentItem = Instantiate(itemButton);
-            currentItem.transform.SetParent(this.transform, false);
-            itemsObjectList.Add(currentItem);
-            currentItemsInShop++;
+            CreateItemButton();
         }
         UpdateDisplayList();
     }
 
+    private void CreateItemButton()
+    {
+        GameObject currentItem = Instantiate(itemButton);
+        currentItem.transform.SetParent(this.transform, false);
+        itemsObjectList.Add(currentItem);
+    }
+
     public void UpdateDisplayList()
     {
-        for (int i = 0; i < itemsObjectList.Count; i++)
+        for (int i = 0; i < initialShopItemCount; i++)
         {
-            Item item = itemsObjectList[i].transform.GetComponent<Item>();
-            if (item != null)
+            Item itemCell = GetItem(i);
+            if (itemCell != null)
             {
-                item.UpdateItemData(itemsDataList[i]);
+                int itemIndex = Random.Range(0, itemsDataList.Count);
+                itemCell.UpdateItemData(itemsDataList[itemIndex]);
             }
         }
 
+    }
+
+    private Item GetItem(int itemIndex)
+    {
+        return itemsObjectList[itemIndex].transform.GetComponent<Item>();
     }
 
     public void ShowOnlyWeapons()
@@ -167,6 +175,8 @@ public class ItemHandler : MonoBehaviour
         if (timer <= 0)
         {
             timer = shopRefreshTime;
+            UpdateDisplayList();
+            ItemCardHandler.Instance.SetItem(itemsObjectList[0].GetComponent<Item>().currentItemData);
         }
         timerText.text = ((int)timer).ToString();
     }

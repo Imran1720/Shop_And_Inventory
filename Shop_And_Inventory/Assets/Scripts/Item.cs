@@ -11,7 +11,7 @@ public class Item : MonoBehaviour, IPointerDownHandler
     [SerializeField] private Image itemIcon;
     [SerializeField] private TextMeshProUGUI itemCount;
     [SerializeField] private Image containerImage;
-    ItemSO currentItemData;
+    public ItemSO currentItemData;
 
     private void Start()
     {

@@ -20,5 +20,5 @@ MonoBehaviour:
   buyingPrice: 30
   sellingPrice: 15
   weight: 5
-  quantity: 1
+  quantity: 2
   description: A Demon King's Sword!!
