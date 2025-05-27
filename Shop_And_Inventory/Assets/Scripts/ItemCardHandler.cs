@@ -28,17 +28,24 @@ public class ItemCardHandler : MonoBehaviour
     [SerializeField] private ItemSpriteSO bgSprites;
 
     [SerializeField] private Button buyButton;
+    [SerializeField] private Button decrementButton;
+    [SerializeField] private Button incrementButton;
+    [SerializeField] private TextMeshProUGUI itemCountTobeBoughtText;
+    [SerializeField] private GameObject popUPPannel;
 
-    private int itemcount;
+    private int itemCount;
+    private int itemToBeBoughtCount;
     private void Awake()
     {
         Instance = this;
-        buyButton.onClick.AddListener(DecrementCount);
+        buyButton.onClick.AddListener(BuyItem);
+        decrementButton.onClick.AddListener(DecrementCount);
+        incrementButton.onClick.AddListener(IncrementCount);
     }
     public void SetItem(ItemSO _item)
     {
         currentItem = _item;
-        itemcount = currentItem.quantity;
+        itemCount = currentItem.quantity;
         UpdateData();
     }
 
@@ -49,7 +56,7 @@ public class ItemCardHandler : MonoBehaviour
         itemName.text = currentItem.name;
         icon.sprite = currentItem.icon;
         itemClassification.text = currentItem.itemClassification;
-        itemQuantity.text = itemcount.ToString();
+        itemQuantity.text = itemCount.ToString();
         itemPrice.text = currentItem.buyingPrice.ToString();
         itemWeight.text = currentItem.weight.ToString();
         itemDescription.text = currentItem.description;
@@ -83,14 +90,28 @@ public class ItemCardHandler : MonoBehaviour
 
     private void DecrementCount()
     {
-        if (itemcount >= 1)
-            itemcount--;
-
-        UpdateData();
-
-        if (itemcount <= 0)
+        if (itemToBeBoughtCount >= 1)
         {
-            //Deleted item from shop
+            itemToBeBoughtCount--;
         }
+
+        itemCountTobeBoughtText.text = itemToBeBoughtCount.ToString();
+    }
+
+    private void IncrementCount()
+    {
+        if (itemToBeBoughtCount < itemCount)
+        {
+            itemToBeBoughtCount++;
+        }
+
+        itemCountTobeBoughtText.text = itemToBeBoughtCount.ToString();
+    }
+
+    private void BuyItem()
+    {
+        int cost = itemToBeBoughtCount * currentItem.buyingPrice;
+        popUPPannel.SetActive(true);
+        PopUpManager.Instance.SetData(currentItem.itemName, itemToBeBoughtCount, cost);
     }
 }
