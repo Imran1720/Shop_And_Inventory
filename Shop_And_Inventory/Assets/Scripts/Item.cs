@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,15 +12,18 @@ public class Item : MonoBehaviour, IPointerDownHandler
     [SerializeField] private Image itemIcon;
     [SerializeField] private TextMeshProUGUI itemCount;
     [SerializeField] private Image containerImage;
-    public ItemSO currentItemData;
+    public ItemData currentItemData;
 
-    private void Start()
-    {
-    }
 
-    public void UpdateItemData(ItemSO item)
+    public void SetItemData(ItemData item, int id)
     {
         currentItemData = item;
+        currentItemData.id = id;
+        SetItemVisualData(currentItemData);
+    }
+
+    private void SetItemVisualData(ItemData item)
+    {
         itemIcon.sprite = item.icon;
         itemCount.text = item.quantity.ToString();
         containerImage.sprite = UIUtility.Instance.GetButtonRarity(item.itemRarity);
@@ -34,4 +38,13 @@ public class Item : MonoBehaviour, IPointerDownHandler
     {
         ItemCardHandler.Instance.SetItem(currentItemData);
     }
+
+    public void updateItemCount(int count)
+    {
+        currentItemData.quantity = count;
+        itemCount.text = count.ToString();
+    }
+
 }
+
+

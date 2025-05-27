@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class ItemCardHandler : MonoBehaviour
 {
     public static ItemCardHandler Instance;
-    private ItemSO currentItem;
+    private ItemData currentItem;
 
     [SerializeField] private TextMeshProUGUI itemName;
     [SerializeField] private Image icon;
@@ -38,11 +38,14 @@ public class ItemCardHandler : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+    private void Start()
+    {
         buyButton.onClick.AddListener(BuyItem);
         decrementButton.onClick.AddListener(DecrementCount);
         incrementButton.onClick.AddListener(IncrementCount);
     }
-    public void SetItem(ItemSO _item)
+    public void SetItem(ItemData _item)
     {
         currentItem = _item;
         itemCount = currentItem.quantity;
@@ -53,7 +56,7 @@ public class ItemCardHandler : MonoBehaviour
     {
         itemCardBG.sprite = GetBGSprite(currentItem.itemRarity);
         itemName.color = GetTitleColor(currentItem.itemRarity);
-        itemName.text = currentItem.name;
+        itemName.text = currentItem.itemName;
         icon.sprite = currentItem.icon;
         itemClassification.text = currentItem.itemClassification;
         itemQuantity.text = itemCount.ToString();
@@ -112,6 +115,6 @@ public class ItemCardHandler : MonoBehaviour
     {
         int cost = itemToBeBoughtCount * currentItem.buyingPrice;
         popUPPannel.SetActive(true);
-        PopUpManager.Instance.SetData(currentItem.itemName, itemToBeBoughtCount, cost);
+        PopUpManager.Instance.SetData(currentItem, itemToBeBoughtCount);
     }
 }

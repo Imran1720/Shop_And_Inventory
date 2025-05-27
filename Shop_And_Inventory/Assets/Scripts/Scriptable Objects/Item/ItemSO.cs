@@ -4,6 +4,7 @@ using UnityEngine.UI;
 [CreateAssetMenu(menuName = "ScriptableObject/Item", fileName = "Item")]
 public class ItemSO : ScriptableObject
 {
+    public int id;
     public string itemName;
     public string itemClassification;
     public ItemType itemType;

@@ -7,8 +7,7 @@ using UnityEngine.UI;
 public class ItemHandler : MonoBehaviour
 {
     [SerializeField] private GameObject itemButton;
-    [SerializeField] private List<ItemSO> itemsDataList;
-    //[SerializeField] public List<Item> itemsToSetList;
+    [SerializeField] private List<ItemData> itemsDataList;
     [SerializeField] public List<GameObject> itemsObjectList;
     [SerializeField] private ItemDataBase itemCollection;
 
@@ -23,9 +22,22 @@ public class ItemHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     float timer;
 
-    // Start is called before the first frame update
+
+    private ItemData currentItemData;
+
+    private void OnEnable()
+    {
+        EventService.Instance.OnItemBought.AddListener(UpdateListAfterBuying);
+    }
+
+    private void OnDisable()
+    {
+
+        EventService.Instance.OnItemBought.RemoveListener(UpdateListAfterBuying);
+    }
     void Start()
     {
+        itemsDataList = new List<ItemData>();
         timer = shopRefreshTime;
         UpdateItemDataList();
         AddButtonListeners();
@@ -45,27 +57,35 @@ public class ItemHandler : MonoBehaviour
 
     private void Update()
     {
-        UpdateTime();
+        // UpdateTime();
     }
     private void UpdateItemDataList()
     {
         foreach (ItemSO item in itemCollection.weaponsList)
         {
-            itemsDataList.Add(item);
+            CreateAndAppendDataToList(item);
         }
         foreach (ItemSO item in itemCollection.treasureList)
         {
-            itemsDataList.Add(item);
+            CreateAndAppendDataToList(item);
         }
         foreach (ItemSO item in itemCollection.ConsumableList)
         {
-            itemsDataList.Add(item);
+            CreateAndAppendDataToList(item);
         }
         foreach (ItemSO item in itemCollection.materialList)
         {
-            itemsDataList.Add(item);
+            CreateAndAppendDataToList(item);
         }
     }
+
+    private void CreateAndAppendDataToList(ItemSO item)
+    {
+        currentItemData = CreateItem(item);
+        itemsDataList.Add(currentItemData);
+
+    }
+
     private void CreateItems()
     {
         for (int i = 0; i < initialShopItemCount; i++)
@@ -90,10 +110,10 @@ public class ItemHandler : MonoBehaviour
             if (itemCell != null)
             {
                 int itemIndex = Random.Range(0, itemsDataList.Count);
-                itemCell.UpdateItemData(itemsDataList[itemIndex]);
+                itemCell.SetItemData(itemsDataList[itemIndex], i);
             }
         }
-
+        ItemCardHandler.Instance.SetItem(itemsObjectList[0].GetComponent<Item>().currentItemData);
     }
 
     private Item GetItem(int itemIndex)
@@ -115,6 +135,7 @@ public class ItemHandler : MonoBehaviour
             }
         }
     }
+
 
     public void ShowOnlyConsumables()
     {
@@ -180,4 +201,53 @@ public class ItemHandler : MonoBehaviour
         }
         timerText.text = ((int)timer).ToString();
     }
+
+
+    private ItemData CreateItem(ItemSO item)
+    {
+        ItemData newData = new ItemData();
+        newData.id = itemsDataList.Count;
+        newData.itemName = item.itemName;
+        newData.itemType = item.itemType;
+        newData.itemRarity = item.itemRarity;
+        newData.icon = item.icon;
+        newData.buyingPrice = item.buyingPrice;
+        newData.sellingPrice = item.buyingPrice;
+        newData.weight = item.weight;
+        newData.quantity = item.quantity;
+        newData.description = item.description;
+
+        return newData;
+    }
+
+    private void UpdateListAfterBuying(ItemData _updatedData)
+    {
+
+        if (_updatedData.quantity <= 0)
+        {
+            Destroy(itemsObjectList[_updatedData.id]);
+        }
+        else
+        {
+            itemsObjectList[_updatedData.id].transform.GetComponent<Item>().updateItemCount(_updatedData.quantity);
+        }
+
+
+    }
+}
+
+
+public struct ItemData
+{
+    public int id;
+    public string itemName;
+    public string itemClassification;
+    public ItemType itemType;
+    public Rarity itemRarity;
+    public Sprite icon;
+    public int buyingPrice;
+    public int sellingPrice;
+    public int weight;
+    public int quantity;
+    public string description;
 }

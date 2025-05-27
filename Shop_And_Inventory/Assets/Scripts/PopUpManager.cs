@@ -12,20 +12,22 @@ public class PopUpManager : MonoBehaviour
     [SerializeField] private Button acceptButton;
     [SerializeField] private Button cancelButton;
 
+    ItemData itemData;
+
     private void Awake()
     {
         Instance = this;
     }
     private void Start()
     {
-        ClosePopUp();
         acceptButton.onClick.AddListener(BuyItem);
         cancelButton.onClick.AddListener(ClosePopUp);
     }
-    public void SetData(string itemName, int itemCount, int itemCost)
+    public void SetData(ItemData _itemData, int itemCount)
     {
-        promptText.text = $"Do you want to buy {itemName} x{itemCount} for {itemCost}?";
-
+        itemData = _itemData;
+        itemData.quantity -= itemCount;
+        promptText.text = $"Do you want to buy {itemData.itemName} x{itemCount} for {itemData.buyingPrice * itemCount}?";
     }
 
     private void ClosePopUp()
@@ -36,8 +38,9 @@ public class PopUpManager : MonoBehaviour
     private void BuyItem()
     {
         //event to update count in the shop
-        Debug.Log($"Bought item");
         gameObject.SetActive(false);
+
+        EventService.Instance.OnItemBought.InvokeEvent(itemData);
     }
 
 }
