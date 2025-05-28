@@ -49,6 +49,8 @@ public class ItemCardHandler : MonoBehaviour
     {
         currentItem = _item;
         itemCount = currentItem.quantity;
+        itemToBeBoughtCount = 0;
+        itemCountTobeBoughtText.text = itemToBeBoughtCount.ToString();
         UpdateData();
     }
 
@@ -113,6 +115,10 @@ public class ItemCardHandler : MonoBehaviour
 
     private void BuyItem()
     {
+        if (itemToBeBoughtCount <= 0)
+        {
+            return;
+        }
         int cost = itemToBeBoughtCount * currentItem.buyingPrice;
         popUPPannel.SetActive(true);
         PopUpManager.Instance.SetData(currentItem, itemToBeBoughtCount);
