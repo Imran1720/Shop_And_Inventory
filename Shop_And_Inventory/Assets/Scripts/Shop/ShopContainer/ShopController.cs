@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public class ShopController
 {
     private ShopView shopView;
@@ -12,4 +14,31 @@ public class ShopController
         shopView.InitializeShopController(this);
         shopModel.InitializeShopController(this);
     }
+
+    private void CreateShopItemsCards()
+    {
+        int numberOfCardsToSpawn = shopModel.GetDefaultSpawnCount();
+        for (int i = 0; i < numberOfCardsToSpawn; i++)
+        {
+            CreateItemCards();
+        }
+
+    }
+
+    private void CreateItemCards()
+    {
+        GameObject newItemCard = GameObject.Instantiate(shopModel.GetShopItemCard());
+        newItemCard.transform.SetParent(shopView.transform, false);
+        shopModel.AddSpawnedItemCardToList(newItemCard);
+    }
+
+
+    //private void CreateItems()
+    //{
+    //    for (int i = 0; i < initialShopItemCount; i++)
+    //    {
+    //        CreateItemButton();
+    //    }
+    //    UpdateDisplayList();
+    //}
 }

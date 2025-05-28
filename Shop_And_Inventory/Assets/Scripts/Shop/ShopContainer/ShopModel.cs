@@ -9,17 +9,17 @@ public class ShopModel
 
     private ShopController shopController;
 
-    public int initialShopItemCount;
+    public int defaultItemsSpawnCount;
     private int shopRefreshTime;
 
     public ShopModel(GameObject _itemCardPrefab,
         List<ItemData> _allGameItems,
-         int _initialShopItemCount,
+         int _defaultItemsSpawnCount,
          int _shopRefreshTime)
     {
         itemCardPrefab = _itemCardPrefab;
         allGameItems = _allGameItems;
-        initialShopItemCount = _initialShopItemCount;
+        defaultItemsSpawnCount = _defaultItemsSpawnCount;
         shopRefreshTime = _shopRefreshTime;
     }
 
@@ -31,4 +31,7 @@ public class ShopModel
 
     public void InitializeShopController(ShopController _controller) => shopController = _controller;
 
+    public int GetDefaultSpawnCount() => defaultItemsSpawnCount;
+
+    public void AddSpawnedItemCardToList(GameObject _newCard) => spawnedItemCardsList.Add(_newCard);
 }
