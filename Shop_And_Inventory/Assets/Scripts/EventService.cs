@@ -14,10 +14,12 @@ public class EventService
     }
 
     public EventController<ItemData> OnItemBought { get; private set; }
+    public EventController OnShopRefresh { get; private set; }
 
     public EventService()
     {
         OnItemBought = new EventController<ItemData>();
+        OnShopRefresh = new EventController();
     }
 
 }

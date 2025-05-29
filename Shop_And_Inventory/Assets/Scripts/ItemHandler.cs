@@ -229,10 +229,10 @@ public class ItemHandler : MonoBehaviour
         }
         else
         {
-            ItemCardHandler.Instance.SetItem(itemsObjectList[0].GetComponent<Item>().currentItemData);
             itemsObjectList[_updatedData.id].transform.GetComponent<Item>().updateItemCount(_updatedData.quantity);
-        }
 
+            ItemCardHandler.Instance.SetItem(itemsObjectList[0].GetComponent<Item>().currentItemData);
+        }
 
     }
 }

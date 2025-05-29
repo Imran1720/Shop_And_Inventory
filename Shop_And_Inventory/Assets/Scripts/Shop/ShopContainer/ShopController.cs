@@ -1,10 +1,12 @@
-
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ShopController
 {
     private ShopView shopView;
     private ShopModel shopModel;
+
+    private float timer;
 
     public ShopController(ShopView _shopView, ShopModel _shopModel)
     {
@@ -13,9 +15,18 @@ public class ShopController
 
         shopView.InitializeShopController(this);
         shopModel.InitializeShopController(this);
+
+        shopModel.SetItemContainer(shopView.GetItemContainer());
+
+        timer = shopModel.GetShopRefreshTime();
+        EventService.Instance.OnItemBought.AddListener(OnBuyingItemFromShop);
+    }
+    ~ShopController()
+    {
+        EventService.Instance.OnItemBought.RemoveListener(OnBuyingItemFromShop);
     }
 
-    private void CreateShopItemsCards()
+    public void CreateShopItemsCards()
     {
         int numberOfCardsToSpawn = shopModel.GetDefaultSpawnCount();
         for (int i = 0; i < numberOfCardsToSpawn; i++)
@@ -28,17 +39,87 @@ public class ShopController
     private void CreateItemCards()
     {
         GameObject newItemCard = GameObject.Instantiate(shopModel.GetShopItemCard());
-        newItemCard.transform.SetParent(shopView.transform, false);
+        newItemCard.transform.SetParent(shopModel.GetItemContainer().transform, false);
         shopModel.AddSpawnedItemCardToList(newItemCard);
     }
 
 
-    //private void CreateItems()
-    //{
-    //    for (int i = 0; i < initialShopItemCount; i++)
-    //    {
-    //        CreateItemButton();
-    //    }
-    //    UpdateDisplayList();
-    //}
+    public void UpdateItemCardsList()
+    {
+        int numberOfCardsToSpawn = shopModel.GetDefaultSpawnCount();
+        for (int i = 0; i < numberOfCardsToSpawn; i++)
+        {
+            Item itemCell = shopModel.GetItemCardAtIndex(i);
+            if (itemCell != null)
+            {
+                int itemIndex = Random.Range(0, shopModel.GetAllGameItemsCount());
+                itemCell.SetItemData(shopModel.GetGameItemAtIndex(itemIndex), i);
+            }
+        }
+        ItemCardHandler.Instance.SetItem(shopModel.GetFirstItemInShop());
+    }
+
+
+    public void ShowItemsOfType(ItemType _itemType) => shopModel.ShowItemOfType(_itemType);
+    public void ShowAllItems() => shopModel.ShowAllItems();
+
+    private void OnBuyingItemFromShop(ItemData _updatedData)
+    {
+        UpdateItemInList(_updatedData);
+    }
+
+    private void UpdateItemInList(ItemData data)
+    {
+        List<GameObject> shopItemsList = shopModel.GetShopItemsList();
+
+        foreach (GameObject item in shopItemsList)
+        {
+            if (item != null && item.GetComponent<Item>().currentItemData.id == data.id)
+            {
+                if (data.quantity <= 0)
+                {
+                    shopModel.RemoveItemFromShop(item);
+                    GameObject.Destroy(item);
+                }
+                else
+                {
+                    item.GetComponent<Item>().updateItemCount(data.quantity);
+                }
+                ItemCardHandler.Instance.SetItem(shopModel.GetFirstItemInShop());
+                return;
+            }
+        }
+    }
+
+
+    public void UpdateShopTimer()
+    {
+        timer -= Time.deltaTime;
+
+        if (timer <= 0)
+        {
+            ResetShop();
+        }
+    }
+
+    private void ResetShop()
+    {
+        EventService.Instance.OnShopRefresh.InvokeEvent();
+        timer = shopModel.GetShopRefreshTime();
+        ClearShop();
+        CreateShopItemsCards();
+        UpdateItemCardsList();
+        ItemCardHandler.Instance.SetItem(shopModel.GetFirstItemInShop());
+    }
+
+    private void ClearShop()
+    {
+        foreach (GameObject item in shopModel.GetShopItemsList())
+        {
+            GameObject.Destroy(item);
+        }
+
+        shopModel.RemoveAllItems();
+    }
+    public float GetTime() => timer;
 }

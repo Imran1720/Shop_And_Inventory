@@ -63,4 +63,5 @@ public class NotificationManager : MonoBehaviour
         notificationText.text = "You Bought a " + itemName;
         timer = notificationDuration;
     }
+
 }

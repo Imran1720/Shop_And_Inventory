@@ -6,12 +6,12 @@ using UnityEngine;
 public class ShopSpawner : MonoBehaviour
 {
     [Header("Script")]
-    [SerializeField] private ShopView shopView;
+    private ShopView shopView;
 
     [Header("Objects")]
+    [SerializeField] private GameObject shopPrefab;
     [SerializeField] private GameObject itemCardPrefab;
     [SerializeField] private ItemDataBase itemDatabase;
-
 
     [Header("Data")]
     [SerializeField] public int initialShopItemCount;
@@ -19,10 +19,20 @@ public class ShopSpawner : MonoBehaviour
 
     private List<ItemData> allGameItems;
 
+
+
     private void Start()
     {
         allGameItems = new List<ItemData>();
         LoadAllItemData();
+
+        GameObject shop = Instantiate(shopPrefab) as GameObject;
+        shop.transform.SetParent(transform, false);
+
+        shopView = shop.GetComponent<ShopView>();
+        ShopModel shopModel = new ShopModel(itemCardPrefab, allGameItems, initialShopItemCount, shopRefreshTime);
+
+        ShopController controller = new ShopController(shopView, shopModel);
     }
 
     private void LoadAllItemData()
@@ -58,4 +68,5 @@ public class ShopSpawner : MonoBehaviour
 
         return newData;
     }
+
 }

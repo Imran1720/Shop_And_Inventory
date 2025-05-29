@@ -18,10 +18,22 @@ public class PopUpManager : MonoBehaviour
     {
         Instance = this;
     }
+
+    private void OnEnable()
+    {
+        EventService.Instance.OnShopRefresh.AddListener(OnShopRefresh);
+    }
+
+    private void OnDisable()
+    {
+        EventService.Instance.OnShopRefresh.RemoveListener(OnShopRefresh);
+    }
     private void Start()
     {
         acceptButton.onClick.AddListener(BuyItem);
         cancelButton.onClick.AddListener(ClosePopUp);
+
+
     }
     public void SetData(ItemData _itemData, int itemCount)
     {
@@ -42,5 +54,7 @@ public class PopUpManager : MonoBehaviour
 
         EventService.Instance.OnItemBought.InvokeEvent(itemData);
     }
+
+    private void OnShopRefresh() => gameObject.SetActive(false);
 
 }

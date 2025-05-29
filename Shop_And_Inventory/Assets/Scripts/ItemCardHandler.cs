@@ -49,7 +49,7 @@ public class ItemCardHandler : MonoBehaviour
     {
         currentItem = _item;
         itemCount = currentItem.quantity;
-        itemToBeBoughtCount = 0;
+        itemToBeBoughtCount = 1;
         itemCountTobeBoughtText.text = itemToBeBoughtCount.ToString();
         UpdateData();
     }
