@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class InventoryController
 {
@@ -22,38 +23,33 @@ public class InventoryController
     {
     }
 
-    //public void CreateShopItemsCards()
-    //{
-    //    int numberOfCardsToSpawn = shopModel.GetDefaultSpawnCount();
-    //    for (int i = 0; i < numberOfCardsToSpawn; i++)
-    //    {
-    //        CreateItemCards();
-    //    }
+    public void GatherItems()
+    {
+        int numberOfCardsToSpawn = inventoryModel.GetRandomSpawnCount();
+        for (int i = 0; i < numberOfCardsToSpawn; i++)
+        {
+            GameObject newItem = CreateItemCards();
+            int id = i + inventoryModel.CreateItemId();
+            SetItemData(newItem, id);
+            //inventoryModel.AddItemToInventory(newItem);
+        }
+    }
 
-    //}
-
-    //private void CreateItemCards()
-    //{
-    //    GameObject newItemCard = GameObject.Instantiate(shopModel.GetShopItemCard());
-    //    newItemCard.transform.SetParent(shopModel.GetItemContainer().transform, false);
-    //    shopModel.AddSpawnedItemCardToList(newItemCard);
-    //}
+    private GameObject CreateItemCards()
+    {
+        GameObject newItemCard = GameObject.Instantiate(inventoryModel.GetShopItemCard());
+        newItemCard.transform.SetParent(inventoryModel.GetItemContainer().transform, false);
+        return newItemCard;
+    }
 
 
-    //public void UpdateItemCardsList()
-    //{
-    //    int numberOfCardsToSpawn = shopModel.GetDefaultSpawnCount();
-    //    for (int i = 0; i < numberOfCardsToSpawn; i++)
-    //    {
-    //        Item itemCell = shopModel.GetItemCardAtIndex(i);
-    //        if (itemCell != null)
-    //        {
-    //            int itemIndex = Random.Range(0, shopModel.GetAllGameItemsCount());
-    //            itemCell.SetItemData(shopModel.GetGameItemAtIndex(itemIndex), i);
-    //        }
-    //    }
-    //    EventService.Instance.OnShopUpdate.InvokeEvent(shopModel.GetFirstItemInShop());
-    //}
+    public void SetItemData(GameObject _item, int _id)
+    {
+        int itemIndex = Random.Range(0, inventoryModel.GetAllGameItemsCount());
+        ItemData data = inventoryModel.GetItemAtIndex(itemIndex);
+        _item.GetComponent<Item>().SetItemData(data, _id, false);
+
+    }
 
 
     public void ShowItemsOfType(ItemType _itemType) => inventoryModel.ShowItemOfType(_itemType);

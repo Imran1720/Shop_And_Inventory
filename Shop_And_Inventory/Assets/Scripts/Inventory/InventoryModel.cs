@@ -12,10 +12,19 @@ public class InventoryModel
     private int maxInventoryWeight;
     private int currentInventoryWeight;
     private int coins;
-    public InventoryModel(GameObject _itemCardPrfab, int _maxInventoryWeight)
+    private int itemsAddedToinventory = 0;
+
+
+    private int maxItemsSpawnCount = 3;
+
+    private List<ItemData> allGameItems;
+    public InventoryModel(GameObject _itemCardPrfab,
+        List<ItemData> _allGameItems,
+        int _maxInventoryWeight)
     {
         itemCardPrefab = _itemCardPrfab;
         maxInventoryWeight = _maxInventoryWeight;
+        allGameItems = _allGameItems;
 
         spawnedItemCardsList = new List<GameObject>();
         currentInventoryWeight = 10;
@@ -54,9 +63,16 @@ public class InventoryModel
         }
     }
 
+    public void InitializeShopController(InventoryController _controller) => inventoryController = _controller;
+    public int GetAllGameItemsCount() => allGameItems.Count;
+    public int GetRandomSpawnCount() => Random.Range(1, maxItemsSpawnCount + 1);
+    public GameObject GetShopItemCard() => itemCardPrefab;
+    public GameObject GetItemContainer() => itemContainer;
+    public ItemData GetItemAtIndex(int index) => allGameItems[index];
+    public List<GameObject> GetInventoryItemsList() => spawnedItemCardsList;
+    public void AddItemToInventory(GameObject _item) => spawnedItemCardsList.Add(_item);
     public void RemoveItemFromInventory(GameObject _item) => spawnedItemCardsList.Remove(_item);
     public void RemoveAllItems() => spawnedItemCardsList.Clear();
-    public List<GameObject> GetInventoryItemsList() => spawnedItemCardsList;
+    public int CreateItemId() => spawnedItemCardsList.Count + (itemsAddedToinventory++);
     public void SetItemContainer(GameObject _container) => itemContainer = _container;
-    public void InitializeShopController(InventoryController _controller) => inventoryController = _controller;
 }

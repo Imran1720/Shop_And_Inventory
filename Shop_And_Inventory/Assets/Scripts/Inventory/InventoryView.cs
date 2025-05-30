@@ -15,6 +15,7 @@ public class InventoryView : MonoBehaviour
     [SerializeField] private Button treasureFilterButton;
     [SerializeField] private Button materialFilterButton;
     [SerializeField] private Button allFilterButton;
+    [SerializeField] private Button gatherItemButton;
 
     [Header("Weight Text")]
     [SerializeField] private TextMeshProUGUI weightText;
@@ -29,6 +30,7 @@ public class InventoryView : MonoBehaviour
         treasureFilterButton.onClick.AddListener(FilterTreasure);
         materialFilterButton.onClick.AddListener(FilterMaterials);
         allFilterButton.onClick.AddListener(FilterAll);
+        gatherItemButton.onClick.AddListener(GatherItems);
     }
 
     public void SetInventoryWeight(int value) => weightText.text = value.ToString();
@@ -38,6 +40,7 @@ public class InventoryView : MonoBehaviour
     private void FilterAll() => inventoryController.ShowAllItems();
     private void FilterWeapons() => inventoryController.ShowItemsOfType(ItemType.WEAPON);
 
+    private void GatherItems() => inventoryController.GatherItems();
     public GameObject GetItemContainer() => itemContainer;
     public void InitializeShopController(InventoryController _controller) => inventoryController = _controller;
 
