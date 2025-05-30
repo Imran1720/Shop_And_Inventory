@@ -56,7 +56,7 @@ public class ShopController
                 itemCell.SetItemData(shopModel.GetGameItemAtIndex(itemIndex), i);
             }
         }
-        ItemCardHandler.Instance.SetItem(shopModel.GetFirstItemInShop());
+        EventService.Instance.OnShopUpdate.InvokeEvent(shopModel.GetFirstItemInShop());
     }
 
 
@@ -65,6 +65,7 @@ public class ShopController
 
     private void OnBuyingItemFromShop(ItemData _updatedData)
     {
+
         UpdateItemInList(_updatedData);
     }
 
@@ -85,7 +86,7 @@ public class ShopController
                 {
                     item.GetComponent<Item>().updateItemCount(data.quantity);
                 }
-                ItemCardHandler.Instance.SetItem(shopModel.GetFirstItemInShop());
+                EventService.Instance.OnShopUpdate.InvokeEvent(shopModel.GetFirstItemInShop());
                 return;
             }
         }
@@ -104,12 +105,11 @@ public class ShopController
 
     private void ResetShop()
     {
-        EventService.Instance.OnShopRefresh.InvokeEvent();
         timer = shopModel.GetShopRefreshTime();
         ClearShop();
         CreateShopItemsCards();
         UpdateItemCardsList();
-        ItemCardHandler.Instance.SetItem(shopModel.GetFirstItemInShop());
+        EventService.Instance.OnShopRefresh.InvokeEvent(shopModel.GetFirstItemInShop());
     }
 
     private void ClearShop()

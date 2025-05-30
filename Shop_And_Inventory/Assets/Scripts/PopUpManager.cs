@@ -30,22 +30,22 @@ public class PopUpManager : MonoBehaviour
     }
     private void Start()
     {
+        InitializeButtonListeners();
+    }
+
+    private void InitializeButtonListeners()
+    {
         acceptButton.onClick.AddListener(BuyItem);
         cancelButton.onClick.AddListener(ClosePopUp);
-
-
     }
-    public void SetData(ItemData _itemData, int itemCount)
+
+    public void SetData(ItemData _itemData, int _itemCount)
     {
         itemData = _itemData;
-        itemData.quantity -= itemCount;
-        promptText.text = $"Do you want to buy {itemData.itemName} x{itemCount} for {itemData.buyingPrice * itemCount}?";
+        itemData.quantity -= _itemCount;
+        promptText.text = $"Do you want to buy {itemData.itemName} x{_itemCount} for {(itemData.buyingPrice * _itemCount)}?";
     }
 
-    private void ClosePopUp()
-    {
-        gameObject.SetActive(false);
-    }
 
     private void BuyItem()
     {
@@ -55,6 +55,11 @@ public class PopUpManager : MonoBehaviour
         EventService.Instance.OnItemBought.InvokeEvent(itemData);
     }
 
-    private void OnShopRefresh() => gameObject.SetActive(false);
+    private void ClosePopUp() => gameObject.SetActive(false);
+    private void OnShopRefresh(ItemData _data)
+    {
+        itemData = _data;
+        gameObject.SetActive(false);
+    }
 
 }

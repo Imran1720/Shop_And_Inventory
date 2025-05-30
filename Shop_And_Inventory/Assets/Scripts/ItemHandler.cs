@@ -27,13 +27,13 @@ public class ItemHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        EventService.Instance.OnItemBought.AddListener(UpdateListAfterBuying);
+        //EventService.Instance.OnItemBought.AddListener(UpdateListAfterBuying);
     }
 
     private void OnDisable()
     {
 
-        EventService.Instance.OnItemBought.RemoveListener(UpdateListAfterBuying);
+        //EventService.Instance.OnItemBought.RemoveListener(UpdateListAfterBuying);
     }
     void Start()
     {
@@ -110,7 +110,7 @@ public class ItemHandler : MonoBehaviour
             if (itemCell != null)
             {
                 int itemIndex = Random.Range(0, itemsDataList.Count);
-                itemCell.SetItemData(itemsDataList[itemIndex], i);
+                //itemCell.SetItemData(itemsDataList[itemIndex], i);
             }
         }
         ItemCardHandler.Instance.SetItem(itemsObjectList[0].GetComponent<Item>().currentItemData);

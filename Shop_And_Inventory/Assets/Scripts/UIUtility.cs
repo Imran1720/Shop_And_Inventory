@@ -9,7 +9,8 @@ public class UIUtility : MonoBehaviour
 
     public List<Sprite> itemButtonRarityCart;
 
-    public GameObject NotificationPannel;
+    public GameObject notificationPannel;
+    public GameObject buyPopUPPanel;
 
     private void OnEnable()
     {
@@ -19,7 +20,6 @@ public class UIUtility : MonoBehaviour
     private void OnDisable()
     {
         EventService.Instance.OnItemBought.RemoveListener(ShowNotification);
-
     }
 
     private void Awake()
@@ -27,18 +27,17 @@ public class UIUtility : MonoBehaviour
         Instance = this;
     }
 
-
     public Sprite GetButtonRarity(Rarity _rarity)
     {
         return itemButtonRarityCart[(int)_rarity];
     }
 
-
     private void ShowNotification(ItemData data)
     {
-        NotificationPannel.SetActive(true);
+        notificationPannel.SetActive(true);
         NotificationManager.Instance.SetNotificationData(data.itemName);
-
     }
 
+    public GameObject GetNotificationPanel() => notificationPannel;
+    public void EnableBuyPopPanel() => buyPopUPPanel.SetActive(true);
 }

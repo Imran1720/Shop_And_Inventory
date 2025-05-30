@@ -36,7 +36,7 @@ public class Item : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        ItemCardHandler.Instance.SetItem(currentItemData);
+        EventService.Instance.OnItemSelected.InvokeEvent(currentItemData);
     }
 
     public void updateItemCount(int count)
@@ -44,6 +44,7 @@ public class Item : MonoBehaviour, IPointerDownHandler
         currentItemData.quantity = count;
         itemCount.text = count.ToString();
     }
+
 
 }
 

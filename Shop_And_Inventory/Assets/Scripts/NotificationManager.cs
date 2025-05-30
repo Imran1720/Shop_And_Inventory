@@ -16,27 +16,16 @@ public class NotificationManager : MonoBehaviour
     private float timer;
 
 
-    private void Awake()
-    {
-        Instance = this;
-    }
-    // Start is called before the first frame update
-    void Start()
+    private void Awake() => Instance = this;
+
+    void Start() => InitializeData();
+
+    private void InitializeData()
     {
         timer = notificationDuration;
         slider.maxValue = notificationDuration;
     }
 
-    private void OnEnable()
-    {
-        //EventService.Instance.OnItemBought.AddListener(ShowNotification);
-    }
-    private void OnDisable()
-    {
-        //EventService.Instance.OnItemBought.RemoveListener(ShowNotification);
-    }
-
-    // Update is called once per frame
     void Update()
     {
         timer -= Time.deltaTime;
@@ -47,21 +36,16 @@ public class NotificationManager : MonoBehaviour
         }
     }
 
-    private void HideNotification()
-    {
-        gameObject.SetActive(false);
-    }
-
-    private void ShowNotification(ItemData data)
-    {
-        SetNotificationData(data.itemName);
-        gameObject.SetActive(true);
-    }
-
+    private void HideNotification() => gameObject.SetActive(false);
     public void SetNotificationData(string itemName)
     {
         notificationText.text = "You Bought a " + itemName;
-        timer = notificationDuration;
+        ResetTimer();
     }
 
+    private void ResetTimer()
+    {
+        timer = notificationDuration;
+        slider.value = timer;
+    }
 }

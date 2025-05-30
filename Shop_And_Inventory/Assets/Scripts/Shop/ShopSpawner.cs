@@ -56,6 +56,7 @@ public class ShopSpawner : MonoBehaviour
     {
         ItemData newData = new ItemData();
         newData.id = allGameItems.Count;
+        newData.itemClassification = item.itemClassification;
         newData.itemName = item.itemName;
         newData.itemType = item.itemType;
         newData.itemRarity = item.itemRarity;
