@@ -23,6 +23,7 @@ public class ShopModel
         allGameItems = _allGameItems;
         defaultItemsSpawnCount = _defaultItemsSpawnCount;
         shopRefreshTime = _shopRefreshTime;
+
         spawnedItemCardsList = new List<GameObject>();
     }
 

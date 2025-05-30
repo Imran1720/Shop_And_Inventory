@@ -24,8 +24,7 @@ public class ItemCardView : MonoBehaviour
     [SerializeField] private Button decrementButton;
     [SerializeField] private Button incrementButton;
 
-    [Header("PANELS")]
-    [SerializeField] private GameObject popUPPannel;
+
 
     private ItemCardController itemCardController;
 

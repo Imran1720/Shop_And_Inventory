@@ -53,7 +53,7 @@ public class ShopController
             if (itemCell != null)
             {
                 int itemIndex = Random.Range(0, shopModel.GetAllGameItemsCount());
-                itemCell.SetItemData(shopModel.GetGameItemAtIndex(itemIndex), i);
+                itemCell.SetItemData(shopModel.GetGameItemAtIndex(itemIndex), i, true);
             }
         }
         EventService.Instance.OnShopUpdate.InvokeEvent(shopModel.GetFirstItemInShop());

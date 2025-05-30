@@ -15,10 +15,11 @@ public class Item : MonoBehaviour, IPointerDownHandler
     public ItemData currentItemData;
 
 
-    public void SetItemData(ItemData item, int id)
+    public void SetItemData(ItemData item, int id, bool isInShop)
     {
         currentItemData = item;
         currentItemData.id = id;
+        currentItemData.isShopItem = isInShop;
         SetItemVisualData(currentItemData);
     }
 

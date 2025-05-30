@@ -2,6 +2,7 @@ using UnityEngine;
 public struct ItemData
 {
     public int id;
+    public bool isShopItem;
     public string itemName;
     public string itemClassification;
     public ItemType itemType;
