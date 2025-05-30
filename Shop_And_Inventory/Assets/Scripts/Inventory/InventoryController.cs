@@ -25,13 +25,18 @@ public class InventoryController
 
     public void GatherItems()
     {
+
         int numberOfCardsToSpawn = inventoryModel.GetRandomSpawnCount();
         for (int i = 0; i < numberOfCardsToSpawn; i++)
         {
-            GameObject newItem = CreateItemCards();
-            int id = i + inventoryModel.CreateItemId();
-            SetItemData(newItem, id);
-            //inventoryModel.AddItemToInventory(newItem);
+            if (inventoryModel.CanAddItem())
+            {
+                GameObject newItem = CreateItemCards();
+                int id = i + inventoryModel.CreateItemId();
+                SetItemData(newItem, id);
+                inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
+                //inventoryModel.AddItemToInventory(newItem);
+            }
         }
     }
 
@@ -47,6 +52,7 @@ public class InventoryController
     {
         int itemIndex = Random.Range(0, inventoryModel.GetAllGameItemsCount());
         ItemData data = inventoryModel.GetItemAtIndex(itemIndex);
+        inventoryModel.UpdateInventoryWeight(data.weight * data.quantity);
         _item.GetComponent<Item>().SetItemData(data, _id, false);
 
     }
