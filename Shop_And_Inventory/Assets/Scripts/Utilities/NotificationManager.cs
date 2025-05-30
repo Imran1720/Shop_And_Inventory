@@ -37,9 +37,9 @@ public class NotificationManager : MonoBehaviour
     }
 
     private void HideNotification() => gameObject.SetActive(false);
-    public void SetNotificationData(string itemName)
+    public void SetNotificationData(string _text)
     {
-        notificationText.text = "You Bought a " + itemName;
+        notificationText.text = _text;
         ResetTimer();
     }
 

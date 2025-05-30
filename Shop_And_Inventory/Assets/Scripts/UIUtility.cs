@@ -14,12 +14,12 @@ public class UIUtility : MonoBehaviour
 
     private void OnEnable()
     {
-        EventService.Instance.OnItemBought.AddListener(ShowNotification);
+        EventService.Instance.OnItemBought.AddListener(ShowBoughtNotification);
     }
 
     private void OnDisable()
     {
-        EventService.Instance.OnItemBought.RemoveListener(ShowNotification);
+        EventService.Instance.OnItemBought.RemoveListener(ShowBoughtNotification);
     }
 
     private void Awake()
@@ -32,12 +32,17 @@ public class UIUtility : MonoBehaviour
         return itemButtonRarityCart[(int)_rarity];
     }
 
-    private void ShowNotification(ItemData data)
+    private void ShowBoughtNotification(ItemData data)
     {
         notificationPannel.SetActive(true);
-        NotificationManager.Instance.SetNotificationData(data.itemName);
+        NotificationManager.Instance.SetNotificationData("You Bought A " + data.itemName);
     }
 
+    public void ShowInventoryFullNotification()
+    {
+        notificationPannel.SetActive(true);
+        NotificationManager.Instance.SetNotificationData("Inventory is Full!!");
+    }
     public GameObject GetNotificationPanel() => notificationPannel;
     public void EnableBuyPopPanel() => buyPopUPPanel.SetActive(true);
 }
