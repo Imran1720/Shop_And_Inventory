@@ -42,7 +42,7 @@ public class PopUpManager : MonoBehaviour
     public void SetData(ItemData _itemData, int _itemCount)
     {
         itemData = _itemData;
-        itemData.quantity -= _itemCount;
+        itemData.quantity = _itemCount;
         promptText.text = $"Do you want to buy {itemData.itemName} x{_itemCount} for {(itemData.buyingPrice * _itemCount)}?";
     }
 
@@ -51,7 +51,6 @@ public class PopUpManager : MonoBehaviour
     {
         //event to update count in the shop
         gameObject.SetActive(false);
-
         EventService.Instance.OnItemBought.InvokeEvent(itemData);
     }
 

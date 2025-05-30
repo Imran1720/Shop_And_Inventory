@@ -28,6 +28,7 @@ public class ItemCardView : MonoBehaviour
 
     private ItemCardController itemCardController;
 
+
     private void Start()
     {
         buyButton.onClick.AddListener(BuyItem);

@@ -69,12 +69,25 @@ public class InventoryModel
     public int GetRandomSpawnCount() => Random.Range(1, maxItemsSpawnCount + 1);
     public GameObject GetShopItemCard() => itemCardPrefab;
     public GameObject GetItemContainer() => itemContainer;
+    public ItemData GetFirstItemInInventory() => spawnedItemCardsList[0].GetComponent<Item>().currentItemData;
     public ItemData GetItemAtIndex(int index) => allGameItems[index];
     public List<GameObject> GetInventoryItemsList() => spawnedItemCardsList;
     public void AddItemToInventory(GameObject _item) => spawnedItemCardsList.Add(_item);
     public void RemoveItemFromInventory(GameObject _item) => spawnedItemCardsList.Remove(_item);
     public void RemoveAllItems() => spawnedItemCardsList.Clear();
     public bool CanAddItem() => currentInventoryWeight < maxInventoryWeight;
-    public int CreateItemId() => spawnedItemCardsList.Count + (itemsAddedToinventory++);
+    public int CreateItemId() => (itemsAddedToinventory++);
+    public void UpdateItemCountWithId(int _id, int _count)
+    {
+        foreach (GameObject item in spawnedItemCardsList)
+        {
+            if (item.GetComponent<Item>().currentItemData.id == _id)
+            {
+                int itemcount = item.GetComponent<Item>().currentItemData.quantity + _count;
+                item.GetComponent<Item>().updateItemCount(itemcount);
+                return;
+            }
+        }
+    }
     public void SetItemContainer(GameObject _container) => itemContainer = _container;
 }

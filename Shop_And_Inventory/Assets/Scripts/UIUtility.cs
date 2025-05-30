@@ -11,15 +11,19 @@ public class UIUtility : MonoBehaviour
 
     public GameObject notificationPannel;
     public GameObject buyPopUPPanel;
+    public GameObject shopItemCardPanel;
+    public GameObject inventoryItemCardPanel;
 
     private void OnEnable()
     {
         EventService.Instance.OnItemBought.AddListener(ShowBoughtNotification);
+        EventService.Instance.OnItemSelected.AddListener(OnItemSelected);
     }
 
     private void OnDisable()
     {
         EventService.Instance.OnItemBought.RemoveListener(ShowBoughtNotification);
+        EventService.Instance.OnItemSelected.RemoveListener(OnItemSelected);
     }
 
     private void Awake()
@@ -45,4 +49,12 @@ public class UIUtility : MonoBehaviour
     }
     public GameObject GetNotificationPanel() => notificationPannel;
     public void EnableBuyPopPanel() => buyPopUPPanel.SetActive(true);
+
+
+    private void OnItemSelected(ItemData _data)
+    {
+        inventoryItemCardPanel.SetActive(!_data.isShopItem);
+        shopItemCardPanel.SetActive(_data.isShopItem);
+    }
+    public bool IsShopCardActive() => shopItemCardPanel.activeSelf;
 }

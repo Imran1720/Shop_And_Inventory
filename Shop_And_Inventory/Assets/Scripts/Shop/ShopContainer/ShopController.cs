@@ -56,7 +56,7 @@ public class ShopController
                 itemCell.SetItemData(shopModel.GetGameItemAtIndex(itemIndex), i, true);
             }
         }
-        EventService.Instance.OnShopUpdate.InvokeEvent(shopModel.GetFirstItemInShop());
+        //EventService.Instance.OnShopUpdate.InvokeEvent(shopModel.GetFirstItemInShop());
     }
 
 
@@ -65,26 +65,26 @@ public class ShopController
 
     private void OnBuyingItemFromShop(ItemData _updatedData)
     {
-
         UpdateItemInList(_updatedData);
     }
 
     private void UpdateItemInList(ItemData data)
     {
         List<GameObject> shopItemsList = shopModel.GetShopItemsList();
-
         foreach (GameObject item in shopItemsList)
         {
             if (item != null && item.GetComponent<Item>().currentItemData.id == data.id)
             {
-                if (data.quantity <= 0)
+                int itemCount = item.GetComponent<Item>().currentItemData.quantity - data.quantity;
+                shopView.PrintStatement("Count:" + itemCount);
+                if (itemCount <= 0)
                 {
                     shopModel.RemoveItemFromShop(item);
                     GameObject.Destroy(item);
                 }
                 else
                 {
-                    item.GetComponent<Item>().updateItemCount(data.quantity);
+                    item.GetComponent<Item>().updateItemCount(itemCount);
                 }
                 EventService.Instance.OnShopUpdate.InvokeEvent(shopModel.GetFirstItemInShop());
                 return;
@@ -103,7 +103,7 @@ public class ShopController
         }
     }
 
-    private void ResetShop()
+    public void ResetShop()
     {
         timer = shopModel.GetShopRefreshTime();
         ClearShop();

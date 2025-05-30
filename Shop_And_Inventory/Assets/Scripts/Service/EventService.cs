@@ -18,6 +18,7 @@ public class EventService
     public EventController<ItemData> OnBuyPopUp { get; private set; }
     public EventController<ItemData> OnShopUpdate { get; private set; }
     public EventController<ItemData> OnItemSelected { get; private set; }
+    public EventController<ItemData> OnItemGathered { get; private set; }
 
     public EventService()
     {
@@ -26,6 +27,7 @@ public class EventService
         OnBuyPopUp = new EventController<ItemData>();
         OnShopUpdate = new EventController<ItemData>();
         OnItemSelected = new EventController<ItemData>();
+        OnItemGathered = new EventController<ItemData>();
     }
 
 }

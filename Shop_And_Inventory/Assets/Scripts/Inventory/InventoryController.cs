@@ -18,9 +18,12 @@ public class InventoryController
         inventoryModel.InitializeShopController(this);
         inventoryModel.SetItemContainer(inventoryView.GetItemContainer());
         inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
+
+        EventService.Instance.OnItemBought.AddListener(OnItemBought);
     }
     ~InventoryController()
     {
+        EventService.Instance.OnItemBought.RemoveListener(OnItemBought);
     }
 
     public void GatherItems()
@@ -34,13 +37,22 @@ public class InventoryController
                 UIUtility.Instance.ShowInventoryFullNotification();
                 return;
             }
-            GameObject newItem = CreateItemCards();
-            int id = i + inventoryModel.CreateItemId();
-            SetItemData(newItem, id);
-            inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
-            //inventoryModel.AddItemToInventory(newItem);
-
+            ItemData newDataItem = CreateItemData();
+            (bool isItemPresent, int itemId) = IsItemPresentInInventory(newDataItem.itemName);
+            if (isItemPresent)
+            {
+                inventoryModel.UpdateItemCountWithId(itemId, newDataItem.quantity);
+            }
+            else
+            {
+                GameObject newItem = CreateItemCards();
+                int id = inventoryModel.CreateItemId();
+                SetItemData(newItem, id, newDataItem);
+                inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
+                inventoryModel.AddItemToInventory(newItem);
+            }
         }
+        EventService.Instance.OnItemGathered.InvokeEvent(inventoryModel.GetFirstItemInInventory());
     }
 
     private GameObject CreateItemCards()
@@ -51,16 +63,20 @@ public class InventoryController
     }
 
 
-    public void SetItemData(GameObject _item, int _id)
+    public void SetItemData(GameObject _item, int _id, ItemData _data)
+    {
+        inventoryModel.UpdateInventoryWeight(_data.weight * _data.quantity);
+        _item.GetComponent<Item>().SetItemData(_data, _id, false);
+
+    }
+
+    private ItemData CreateItemData()
     {
         int itemIndex = Random.Range(0, inventoryModel.GetAllGameItemsCount());
         ItemData data = inventoryModel.GetItemAtIndex(itemIndex);
         data.quantity = 1;
-        inventoryModel.UpdateInventoryWeight(data.weight * data.quantity);
-        _item.GetComponent<Item>().SetItemData(data, _id, false);
-
+        return data;
     }
-
 
     public void ShowItemsOfType(ItemType _itemType) => inventoryModel.ShowItemOfType(_itemType);
     public void ShowAllItems() => inventoryModel.ShowAllItems();
@@ -94,4 +110,45 @@ public class InventoryController
     //    }
     //}
 
+    private void OnItemBought(ItemData _data)
+    {
+        if (!inventoryModel.CanAddItem())
+        {
+            UIUtility.Instance.ShowInventoryFullNotification();
+            return;
+        }
+        (bool isItemPresent, int itemId) = IsItemPresentInInventory(_data.itemName);
+        if (isItemPresent)
+        {
+            inventoryModel.UpdateItemCountWithId(itemId, _data.quantity);
+        }
+        else
+        {
+            GameObject newItem = CreateItemCards();
+            int id = inventoryModel.CreateItemId();
+            UpdateItemData(newItem, _data, id);
+            inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
+            inventoryModel.AddItemToInventory(newItem);
+        }
+    }
+
+    public void UpdateItemData(GameObject _item, ItemData _data, int _id)
+    {
+        inventoryModel.UpdateInventoryWeight(_data.weight * _data.quantity);
+        _item.GetComponent<Item>().SetItemData(_data, _id, false);
+
+    }
+
+    private (bool, int) IsItemPresentInInventory(string _name)
+    {
+        List<GameObject> inventoryItems = inventoryModel.GetInventoryItemsList();
+        foreach (GameObject item in inventoryItems)
+        {
+            if (item.GetComponent<Item>().currentItemData.itemName == _name)
+            {
+                return (true, item.GetComponent<Item>().currentItemData.id);
+            }
+        }
+        return (false, -1);
+    }
 }
