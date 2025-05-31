@@ -79,6 +79,8 @@ public class ItemCardController
         }
         PopUpManager.Instance.SetData(itemCardModel.GetCurrentItem(), itemCardModel.GetNumberOfItemsToBuy());
     }
+
+
     private void OnBuyPopUp(ItemData _data)
     {
         itemCardModel.SetItem(_data);

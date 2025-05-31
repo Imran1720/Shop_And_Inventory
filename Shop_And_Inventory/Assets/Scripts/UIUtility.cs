@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -13,7 +14,9 @@ public class UIUtility : MonoBehaviour
     public GameObject buyPopUPPanel;
     public GameObject shopItemCardPanel;
     public GameObject inventoryItemCardPanel;
+    public TextMeshProUGUI coinsCountText;
 
+    public int playerCoins = 0;
     private void OnEnable()
     {
         EventService.Instance.OnItemBought.AddListener(ShowBoughtNotification);
@@ -56,9 +59,16 @@ public class UIUtility : MonoBehaviour
         NotificationManager.Instance.SetNotificationData("You Sold A " + data.itemName);
     }
 
+    public void ShowNoMoneyNotification()
+    {
+        notificationPannel.SetActive(true);
+        NotificationManager.Instance.SetNotificationData("Insufficient Funds!!");
+    }
+
     public GameObject GetNotificationPanel() => notificationPannel;
     public void EnableBuyPopPanel() => buyPopUPPanel.SetActive(true);
 
+    public void SetCoins(int count) => coinsCountText.text = count.ToString();
 
     private void OnItemSelected(ItemData _data)
     {
@@ -66,4 +76,20 @@ public class UIUtility : MonoBehaviour
         shopItemCardPanel.SetActive(_data.isShopItem);
     }
     public bool IsShopCardActive() => shopItemCardPanel.activeSelf;
+
+    public void IncrementCoins(int value)
+    {
+        playerCoins += value;
+        SetCoins(playerCoins);
+    }
+    public void DecrementCoins(int value)
+    {
+        playerCoins -= value;
+        if (playerCoins <= 0)
+        {
+            playerCoins = 0;
+        }
+        SetCoins(playerCoins);
+    }
+    public int GetTotalMoney() => playerCoins;
 }

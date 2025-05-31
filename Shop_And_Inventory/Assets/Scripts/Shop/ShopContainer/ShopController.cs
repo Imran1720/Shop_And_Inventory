@@ -20,10 +20,12 @@ public class ShopController
 
         timer = shopModel.GetShopRefreshTime();
         EventService.Instance.OnItemBought.AddListener(OnBuyingItemFromShop);
+        EventService.Instance.OnItemSold.AddListener(OnItemSold);
     }
     ~ShopController()
     {
         EventService.Instance.OnItemBought.RemoveListener(OnBuyingItemFromShop);
+        EventService.Instance.OnItemSold.RemoveListener(OnItemSold);
     }
 
     public void CreateShopItemsCards()
@@ -33,7 +35,6 @@ public class ShopController
         {
             CreateItemCards();
         }
-
     }
 
     private void CreateItemCards()
@@ -43,6 +44,13 @@ public class ShopController
         shopModel.AddSpawnedItemCardToList(newItemCard);
     }
 
+    private GameObject CreateNewItemCard()
+    {
+        GameObject newItemCard = GameObject.Instantiate(shopModel.GetShopItemCard());
+        newItemCard.transform.SetParent(shopModel.GetItemContainer().transform, false);
+        shopModel.AddSpawnedItemCardToList(newItemCard);
+        return newItemCard;
+    }
 
     public void UpdateItemCardsList()
     {
@@ -53,12 +61,23 @@ public class ShopController
             if (itemCell != null)
             {
                 int itemIndex = Random.Range(0, shopModel.GetAllGameItemsCount());
-                itemCell.SetItemData(shopModel.GetGameItemAtIndex(itemIndex), i, true);
+                ItemData newItem = shopModel.GetGameItemAtIndex(itemIndex);
+                newItem.isShopItem = true;
+                itemCell.SetItemData(newItem, shopModel.GetTotalItemsAdded());
+                shopModel.IncrementTotalItemCount();
             }
         }
         //EventService.Instance.OnShopUpdate.InvokeEvent(shopModel.GetFirstItemInShop());
     }
 
+    private void OnItemSold(ItemData _data)
+    {
+        GameObject itemObject = CreateNewItemCard();
+
+        Item item = itemObject.GetComponent<Item>();
+        item.SetItemData(_data, shopModel.GetTotalItemsAdded());
+        shopModel.IncrementTotalItemCount();
+    }
 
     public void ShowItemsOfType(ItemType _itemType) => shopModel.ShowItemOfType(_itemType);
     public void ShowAllItems() => shopModel.ShowAllItems();
@@ -120,5 +139,7 @@ public class ShopController
 
         shopModel.RemoveAllItems();
     }
+
+
     public float GetTime() => timer;
 }

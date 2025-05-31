@@ -62,7 +62,7 @@ public class ShopSpawner : MonoBehaviour
         newData.itemRarity = item.itemRarity;
         newData.icon = item.icon;
         newData.buyingPrice = item.buyingPrice;
-        newData.sellingPrice = item.buyingPrice;
+        newData.sellingPrice = item.sellingPrice;
         newData.weight = item.weight;
         newData.quantity = item.quantity;
         newData.description = item.description;

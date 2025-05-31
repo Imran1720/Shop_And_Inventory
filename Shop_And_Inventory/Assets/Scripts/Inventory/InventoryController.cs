@@ -41,6 +41,7 @@ public class InventoryController
             }
             ItemData newDataItem = CreateItemData();
             (bool isItemPresent, int itemId) = IsItemPresentInInventory(newDataItem.itemName);
+            inventoryModel.AddInventoryWeight(newDataItem.quantity * newDataItem.weight);
             if (isItemPresent)
             {
                 inventoryModel.AddItemCountWithId(itemId, newDataItem.quantity);
@@ -50,9 +51,9 @@ public class InventoryController
                 GameObject newItem = CreateItemCards();
                 int id = inventoryModel.CreateItemId();
                 SetItemData(newItem, id, newDataItem);
-                inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
                 inventoryModel.AddItemToInventory(newItem);
             }
+            inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
         }
         EventService.Instance.OnItemGathered.InvokeEvent(inventoryModel.GetFirstItemInInventory());
     }
@@ -67,8 +68,8 @@ public class InventoryController
 
     public void SetItemData(GameObject _item, int _id, ItemData _data)
     {
-        inventoryModel.UpdateInventoryWeight(_data.weight * _data.quantity);
-        _item.GetComponent<Item>().SetItemData(_data, _id, false);
+        //inventoryModel.UpdateInventoryWeight(_data.weight * _data.quantity);
+        _item.GetComponent<Item>().SetItemData(_data, _id);
 
     }
 
@@ -77,6 +78,7 @@ public class InventoryController
         int itemIndex = Random.Range(0, inventoryModel.GetAllGameItemsCount());
         ItemData data = inventoryModel.GetItemAtIndex(itemIndex);
         data.quantity = 1;
+        data.isShopItem = false;
         return data;
     }
 
@@ -85,6 +87,7 @@ public class InventoryController
 
     private void OnItemBought(ItemData _data)
     {
+        _data.isShopItem = false;
         if (!inventoryModel.CanAddItem())
         {
             UIUtility.Instance.ShowInventoryFullNotification();
@@ -104,11 +107,14 @@ public class InventoryController
             UpdateItemData(newItem, _data, id);
             inventoryModel.AddItemToInventory(newItem);
         }
+        UIUtility.Instance.DecrementCoins(_data.buyingPrice * _data.quantity);
         inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
     }
 
     private void OnItemSold(ItemData _data)
     {
+        _data.isShopItem = true;
+
         (int itemId, int count) = GetItemIdAndQuantityInInventory(_data.itemName);
         if (itemId >= 0)
         {
@@ -125,12 +131,13 @@ public class InventoryController
                 }
             }
         }
+        UIUtility.Instance.IncrementCoins(_data.sellingPrice * _data.quantity);
         inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
     }
 
     public void UpdateItemData(GameObject _item, ItemData _data, int _id)
     {
-        _item.GetComponent<Item>().SetItemData(_data, _id, false);
+        _item.GetComponent<Item>().SetItemData(_data, _id);
 
     }
 

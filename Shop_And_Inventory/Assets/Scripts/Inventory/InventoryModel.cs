@@ -12,7 +12,6 @@ public class InventoryModel
     private List<GameObject> spawnedItemCardsList;
     private int maxInventoryWeight;
     private int currentInventoryWeight;
-    private int coins;
     private int itemsAddedToinventory = 0;
 
 
@@ -29,13 +28,11 @@ public class InventoryModel
 
         spawnedItemCardsList = new List<GameObject>();
         currentInventoryWeight = 0;
-        coins = 0;
     }
 
     public GameObject GetInventoryItemCard() => itemCardPrefab;
     public int GetMaxInventoryWeight() => maxInventoryWeight;
     public int GetCurrentInventoryWeight() => currentInventoryWeight;
-    public int GetCurrentMoney() => coins;
     public void AddSpawnedItemCardToList(GameObject _newCard) => spawnedItemCardsList.Add(_newCard);
     public Item GetItemCardAtIndex(int index) => spawnedItemCardsList[index]?.GetComponent<Item>();
 
@@ -119,7 +116,5 @@ public class InventoryModel
         return null;
     }
 
-    public void IncrementCoins(int value) => coins += value;
-    public void DecrementCoins(int value) => coins -= value;
     public void SetItemContainer(GameObject _container) => itemContainer = _container;
 }
