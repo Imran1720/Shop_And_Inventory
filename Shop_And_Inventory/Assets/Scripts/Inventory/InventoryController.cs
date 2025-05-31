@@ -20,10 +20,12 @@ public class InventoryController
         inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
 
         EventService.Instance.OnItemBought.AddListener(OnItemBought);
+        EventService.Instance.OnItemSold.AddListener(OnItemSold);
     }
     ~InventoryController()
     {
         EventService.Instance.OnItemBought.RemoveListener(OnItemBought);
+        EventService.Instance.OnItemSold.RemoveListener(OnItemSold);
     }
 
     public void GatherItems()
@@ -41,7 +43,7 @@ public class InventoryController
             (bool isItemPresent, int itemId) = IsItemPresentInInventory(newDataItem.itemName);
             if (isItemPresent)
             {
-                inventoryModel.UpdateItemCountWithId(itemId, newDataItem.quantity);
+                inventoryModel.AddItemCountWithId(itemId, newDataItem.quantity);
             }
             else
             {
@@ -81,35 +83,6 @@ public class InventoryController
     public void ShowItemsOfType(ItemType _itemType) => inventoryModel.ShowItemOfType(_itemType);
     public void ShowAllItems() => inventoryModel.ShowAllItems();
 
-    //private void OnBuyingItemFromShop(ItemData _updatedData)
-    //{
-
-    //    UpdateItemInList(_updatedData);
-    //}
-
-    //private void UpdateItemInList(ItemData data)
-    //{
-    //    List<GameObject> shopItemsList = shopModel.GetShopItemsList();
-
-    //    foreach (GameObject item in shopItemsList)
-    //    {
-    //        if (item != null && item.GetComponent<Item>().currentItemData.id == data.id)
-    //        {
-    //            if (data.quantity <= 0)
-    //            {
-    //                shopModel.RemoveItemFromShop(item);
-    //                GameObject.Destroy(item);
-    //            }
-    //            else
-    //            {
-    //                item.GetComponent<Item>().updateItemCount(data.quantity);
-    //            }
-    //            EventService.Instance.OnShopUpdate.InvokeEvent(shopModel.GetFirstItemInShop());
-    //            return;
-    //        }
-    //    }
-    //}
-
     private void OnItemBought(ItemData _data)
     {
         if (!inventoryModel.CanAddItem())
@@ -118,23 +91,45 @@ public class InventoryController
             return;
         }
         (bool isItemPresent, int itemId) = IsItemPresentInInventory(_data.itemName);
+        inventoryModel.AddInventoryWeight(_data.quantity * _data.weight);
         if (isItemPresent)
         {
-            inventoryModel.UpdateItemCountWithId(itemId, _data.quantity);
+
+            inventoryModel.AddItemCountWithId(itemId, _data.quantity);
         }
         else
         {
             GameObject newItem = CreateItemCards();
             int id = inventoryModel.CreateItemId();
             UpdateItemData(newItem, _data, id);
-            inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
             inventoryModel.AddItemToInventory(newItem);
         }
+        inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
+    }
+
+    private void OnItemSold(ItemData _data)
+    {
+        (int itemId, int count) = GetItemIdAndQuantityInInventory(_data.itemName);
+        if (itemId >= 0)
+        {
+            count -= _data.quantity;
+            inventoryModel.DecreaseInventoryWeight(_data.quantity * _data.weight);
+            inventoryModel.DecreaseItemCountWithId(itemId, _data.quantity);
+            if (count <= 0)
+            {
+                GameObject itemToBeDeleted = inventoryModel.GetItemWithId(itemId);
+                if (itemToBeDeleted)
+                {
+                    inventoryModel.RemoveItemFromInventory(itemToBeDeleted);
+                    GameObject.Destroy(itemToBeDeleted);
+                }
+            }
+        }
+        inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
     }
 
     public void UpdateItemData(GameObject _item, ItemData _data, int _id)
     {
-        inventoryModel.UpdateInventoryWeight(_data.weight * _data.quantity);
         _item.GetComponent<Item>().SetItemData(_data, _id, false);
 
     }
@@ -150,5 +145,18 @@ public class InventoryController
             }
         }
         return (false, -1);
+    }
+
+    private (int, int) GetItemIdAndQuantityInInventory(string _name)
+    {
+        List<GameObject> inventoryItems = inventoryModel.GetInventoryItemsList();
+        foreach (GameObject item in inventoryItems)
+        {
+            if (item.GetComponent<Item>().currentItemData.itemName == _name)
+            {
+                return (item.GetComponent<Item>().currentItemData.id, item.GetComponent<Item>().currentItemData.quantity);
+            }
+        }
+        return (-1, -1);
     }
 }

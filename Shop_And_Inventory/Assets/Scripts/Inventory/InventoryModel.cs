@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class InventoryModel
@@ -77,7 +78,7 @@ public class InventoryModel
     public void RemoveAllItems() => spawnedItemCardsList.Clear();
     public bool CanAddItem() => currentInventoryWeight < maxInventoryWeight;
     public int CreateItemId() => (itemsAddedToinventory++);
-    public void UpdateItemCountWithId(int _id, int _count)
+    public void AddItemCountWithId(int _id, int _count)
     {
         foreach (GameObject item in spawnedItemCardsList)
         {
@@ -89,5 +90,36 @@ public class InventoryModel
             }
         }
     }
+
+    public void AddInventoryWeight(int weight) => currentInventoryWeight += weight;
+    public void DecreaseInventoryWeight(int weight) => currentInventoryWeight -= weight;
+    public void DecreaseItemCountWithId(int _id, int _count)
+    {
+        foreach (GameObject item in spawnedItemCardsList)
+        {
+            if (item.GetComponent<Item>().currentItemData.id == _id)
+            {
+                int itemcount = (item.GetComponent<Item>().currentItemData.quantity - _count);
+                item.GetComponent<Item>().updateItemCount(itemcount);
+                return;
+            }
+        }
+    }
+
+    public GameObject GetItemWithId(int _id)
+    {
+        foreach (GameObject item in spawnedItemCardsList)
+        {
+            if (item.GetComponent<Item>().currentItemData.id == _id)
+            {
+
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public void IncrementCoins(int value) => coins += value;
+    public void DecrementCoins(int value) => coins -= value;
     public void SetItemContainer(GameObject _container) => itemContainer = _container;
 }

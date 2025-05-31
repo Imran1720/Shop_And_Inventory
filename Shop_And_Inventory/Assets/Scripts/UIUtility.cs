@@ -17,12 +17,14 @@ public class UIUtility : MonoBehaviour
     private void OnEnable()
     {
         EventService.Instance.OnItemBought.AddListener(ShowBoughtNotification);
+        EventService.Instance.OnItemSold.AddListener(ShowItemSoldNotification);
         EventService.Instance.OnItemSelected.AddListener(OnItemSelected);
     }
 
     private void OnDisable()
     {
         EventService.Instance.OnItemBought.RemoveListener(ShowBoughtNotification);
+        EventService.Instance.OnItemSold.RemoveListener(ShowItemSoldNotification);
         EventService.Instance.OnItemSelected.RemoveListener(OnItemSelected);
     }
 
@@ -47,6 +49,13 @@ public class UIUtility : MonoBehaviour
         notificationPannel.SetActive(true);
         NotificationManager.Instance.SetNotificationData("Inventory is Full!!");
     }
+
+    public void ShowItemSoldNotification(ItemData data)
+    {
+        notificationPannel.SetActive(true);
+        NotificationManager.Instance.SetNotificationData("You Sold A " + data.itemName);
+    }
+
     public GameObject GetNotificationPanel() => notificationPannel;
     public void EnableBuyPopPanel() => buyPopUPPanel.SetActive(true);
 

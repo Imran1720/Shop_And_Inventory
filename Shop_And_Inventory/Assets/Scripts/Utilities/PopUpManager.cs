@@ -43,7 +43,14 @@ public class PopUpManager : MonoBehaviour
     {
         itemData = _itemData;
         itemData.quantity = _itemCount;
-        promptText.text = $"Do you want to buy {itemData.itemName} x{_itemCount} for {(itemData.buyingPrice * _itemCount)}?";
+        if (itemData.isShopItem)
+        {
+            promptText.text = $"Do you want to buy {itemData.itemName} x{_itemCount} for {(itemData.buyingPrice * _itemCount)}?";
+        }
+        else
+        {
+            promptText.text = $"Do you want to Sell {itemData.itemName} x{_itemCount} for {(itemData.sellingPrice * _itemCount)}?";
+        }
     }
 
 
@@ -51,7 +58,14 @@ public class PopUpManager : MonoBehaviour
     {
         //event to update count in the shop
         gameObject.SetActive(false);
-        EventService.Instance.OnItemBought.InvokeEvent(itemData);
+        if (itemData.isShopItem)
+        {
+            EventService.Instance.OnItemBought.InvokeEvent(itemData);
+        }
+        else
+        {
+            EventService.Instance.OnItemSold.InvokeEvent(itemData);
+        }
     }
 
     private void ClosePopUp() => gameObject.SetActive(false);

@@ -76,7 +76,6 @@ public class ShopController
             if (item != null && item.GetComponent<Item>().currentItemData.id == data.id)
             {
                 int itemCount = item.GetComponent<Item>().currentItemData.quantity - data.quantity;
-                shopView.PrintStatement("Count:" + itemCount);
                 if (itemCount <= 0)
                 {
                     shopModel.RemoveItemFromShop(item);
