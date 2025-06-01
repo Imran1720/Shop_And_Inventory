@@ -16,7 +16,6 @@ public class InventoryController
 
         inventoryView.InitializeShopController(this);
         inventoryModel.InitializeShopController(this);
-        inventoryModel.SetItemContainer(inventoryView.GetItemContainer());
         inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
 
         EventService.Instance.OnItemBought.AddListener(OnItemBought);
@@ -44,7 +43,7 @@ public class InventoryController
             inventoryModel.AddInventoryWeight(newDataItem.quantity * newDataItem.weight);
             if (isItemPresent)
             {
-                inventoryModel.AddItemCountWithId(itemId, newDataItem.quantity);
+                AddItemCountWithId(itemId, newDataItem.quantity);
             }
             else
             {
@@ -60,17 +59,14 @@ public class InventoryController
 
     private GameObject CreateItemCards()
     {
-        GameObject newItemCard = GameObject.Instantiate(inventoryModel.GetShopItemCard());
-        newItemCard.transform.SetParent(inventoryModel.GetItemContainer().transform, false);
+        GameObject newItemCard = GameObject.Instantiate(inventoryModel.GetInventoryItemCard());
+        newItemCard.transform.SetParent(inventoryView.GetItemContainer().transform, false);
         return newItemCard;
     }
 
-
     public void SetItemData(GameObject _item, int _id, ItemData _data)
     {
-        //inventoryModel.UpdateInventoryWeight(_data.weight * _data.quantity);
         _item.GetComponent<Item>().SetItemData(_data, _id);
-
     }
 
     private ItemData CreateItemData()
@@ -82,8 +78,8 @@ public class InventoryController
         return data;
     }
 
-    public void ShowItemsOfType(ItemType _itemType) => inventoryModel.ShowItemOfType(_itemType);
-    public void ShowAllItems() => inventoryModel.ShowAllItems();
+    public void FilterItemsOfType(ItemType _itemType) => ShowItemOfType(_itemType);
+    public void FilterAllItems() => ShowAllItems();
 
     private void OnItemBought(ItemData _data)
     {
@@ -97,8 +93,7 @@ public class InventoryController
         inventoryModel.AddInventoryWeight(_data.quantity * _data.weight);
         if (isItemPresent)
         {
-
-            inventoryModel.AddItemCountWithId(itemId, _data.quantity);
+            AddItemCountWithId(itemId, _data.quantity);
         }
         else
         {
@@ -120,10 +115,10 @@ public class InventoryController
         {
             count -= _data.quantity;
             inventoryModel.DecreaseInventoryWeight(_data.quantity * _data.weight);
-            inventoryModel.DecreaseItemCountWithId(itemId, _data.quantity);
+            DecreaseItemCountWithId(itemId, _data.quantity);
             if (count <= 0)
             {
-                GameObject itemToBeDeleted = inventoryModel.GetItemWithId(itemId);
+                GameObject itemToBeDeleted = GetItemWithId(itemId);
                 if (itemToBeDeleted)
                 {
                     inventoryModel.RemoveItemFromInventory(itemToBeDeleted);
@@ -165,5 +160,73 @@ public class InventoryController
             }
         }
         return (-1, -1);
+    }
+
+    public GameObject GetItemWithId(int _id)
+    {
+        List<GameObject> InventoryItemsList = inventoryModel.GetInventoryItemsList();
+        foreach (GameObject item in InventoryItemsList)
+        {
+            if (item.GetComponent<Item>().currentItemData.id == _id)
+            {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public void DecreaseItemCountWithId(int _id, int _count)
+    {
+        List<GameObject> InventoryItemsList = inventoryModel.GetInventoryItemsList();
+        foreach (GameObject item in InventoryItemsList)
+        {
+            if (item.GetComponent<Item>().currentItemData.id == _id)
+            {
+                int itemcount = (item.GetComponent<Item>().currentItemData.quantity - _count);
+                item.GetComponent<Item>().updateItemCount(itemcount);
+                return;
+            }
+        }
+    }
+
+    public void AddItemCountWithId(int _id, int _count)
+    {
+        List<GameObject> InventoryItemsList = inventoryModel.GetInventoryItemsList();
+        foreach (GameObject item in InventoryItemsList)
+        {
+            if (item.GetComponent<Item>().currentItemData.id == _id)
+            {
+                int itemcount = item.GetComponent<Item>().currentItemData.quantity + _count;
+                item.GetComponent<Item>().updateItemCount(itemcount);
+                return;
+            }
+        }
+    }
+
+    public void ShowAllItems()
+    {
+        List<GameObject> InventoryItemsList = inventoryModel.GetInventoryItemsList();
+        if (InventoryItemsList == null) return;
+        foreach (GameObject _item in InventoryItemsList)
+        {
+            _item.SetActive(true);
+        }
+    }
+
+    public void ShowItemOfType(ItemType _type)
+    {
+        List<GameObject> InventoryItemsList = inventoryModel.GetInventoryItemsList();
+        if (InventoryItemsList == null) return;
+        foreach (GameObject _item in InventoryItemsList)
+        {
+            if (_item.GetComponent<Item>().GetItemType() != _type)
+            {
+                _item.SetActive(false);
+            }
+            else
+            {
+                _item.SetActive(true);
+            }
+        }
     }
 }

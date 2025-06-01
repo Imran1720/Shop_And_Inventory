@@ -29,26 +29,26 @@ public class ShopView : MonoBehaviour
         treasureFilterButton.onClick.AddListener(FilterTreasure);
         materialFilterButton.onClick.AddListener(FilterMaterials);
         allFilterButton.onClick.AddListener(FilterAll);
-
-
-        shopController.ResetShop();
-        //shopController.UpdateItemCardsList();
     }
 
     private void Update()
     {
         shopController.UpdateShopTimer();
-        timerText.text = ((int)shopController.GetTime()).ToString();
+        SetTimerText();
     }
-    private void FilterMaterials() => shopController.ShowItemsOfType(ItemType.MATERIAL);
-    private void FilterConsumables() => shopController.ShowItemsOfType(ItemType.CONSUMABLE);
-    private void FilterTreasure() => shopController.ShowItemsOfType(ItemType.TREASURE);
+
+    private void SetTimerText()
+    {
+        timerText.text = shopController.GetTime().ToString();
+    }
+
     private void FilterAll() => shopController.ShowAllItems();
     private void FilterWeapons() => shopController.ShowItemsOfType(ItemType.WEAPON);
+    private void FilterTreasure() => shopController.ShowItemsOfType(ItemType.TREASURE);
+    private void FilterMaterials() => shopController.ShowItemsOfType(ItemType.MATERIAL);
+    private void FilterConsumables() => shopController.ShowItemsOfType(ItemType.CONSUMABLE);
 
     public void InitializeShopController(ShopController _controller) => shopController = _controller;
-
-    public void PrintStatement(string data) => Debug.Log(data);
 
     public GameObject GetItemContainer() => itemContainer;
 }

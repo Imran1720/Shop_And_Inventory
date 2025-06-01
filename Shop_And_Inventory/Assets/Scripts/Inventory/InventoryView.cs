@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class InventoryView : MonoBehaviour
 {
+    private InventoryController inventoryController;
+
     [Header("Container")]
     [SerializeField] private GameObject itemContainer;
 
@@ -20,7 +22,6 @@ public class InventoryView : MonoBehaviour
     [Header("Weight Text")]
     [SerializeField] private TextMeshProUGUI weightText;
 
-    private InventoryController inventoryController;
 
     // Start is called before the first frame update
     void Start()
@@ -33,16 +34,14 @@ public class InventoryView : MonoBehaviour
         gatherItemButton.onClick.AddListener(GatherItems);
     }
 
-    public void SetInventoryWeight(int value) => weightText.text = value.ToString();
-    private void FilterMaterials() => inventoryController.ShowItemsOfType(ItemType.MATERIAL);
-    private void FilterConsumables() => inventoryController.ShowItemsOfType(ItemType.CONSUMABLE);
-    private void FilterTreasure() => inventoryController.ShowItemsOfType(ItemType.TREASURE);
     private void FilterAll() => inventoryController.ShowAllItems();
-    private void FilterWeapons() => inventoryController.ShowItemsOfType(ItemType.WEAPON);
+    private void FilterWeapons() => inventoryController.FilterItemsOfType(ItemType.WEAPON);
+    private void FilterTreasure() => inventoryController.FilterItemsOfType(ItemType.TREASURE);
+    private void FilterMaterials() => inventoryController.FilterItemsOfType(ItemType.MATERIAL);
+    private void FilterConsumables() => inventoryController.FilterItemsOfType(ItemType.CONSUMABLE);
 
+    public void SetInventoryWeight(int value) => weightText.text = value.ToString();
     private void GatherItems() => inventoryController.GatherItems();
     public GameObject GetItemContainer() => itemContainer;
     public void InitializeShopController(InventoryController _controller) => inventoryController = _controller;
-
-    public void PrintStatement(string data) => Debug.Log(data);
 }
