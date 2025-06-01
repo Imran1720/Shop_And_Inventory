@@ -13,6 +13,7 @@ public class PopUpManager : MonoBehaviour
     [SerializeField] private Button cancelButton;
 
     ItemData itemData;
+    int itemQuantity = 0;
 
     private void Awake()
     {
@@ -42,8 +43,16 @@ public class PopUpManager : MonoBehaviour
     public void SetData(ItemData _itemData, int _itemCount)
     {
         itemData = _itemData;
-        itemData.quantity -= _itemCount;
-        promptText.text = $"Do you want to buy {itemData.itemName} x{_itemCount} for {(itemData.buyingPrice * _itemCount)}?";
+        itemData.quantity = _itemCount;
+        itemQuantity = _itemCount;
+        if (itemData.isShopItem)
+        {
+            promptText.text = $"Do you want to buy {itemData.itemName} x{_itemCount} for {(itemData.buyingPrice * _itemCount)}?";
+        }
+        else
+        {
+            promptText.text = $"Do you want to Sell {itemData.itemName} x{_itemCount} for {(itemData.sellingPrice * _itemCount)}?";
+        }
     }
 
 
@@ -51,8 +60,22 @@ public class PopUpManager : MonoBehaviour
     {
         //event to update count in the shop
         gameObject.SetActive(false);
-
-        EventService.Instance.OnItemBought.InvokeEvent(itemData);
+        if (itemData.isShopItem)
+        {
+            int totalItemCost = itemData.quantity * itemData.buyingPrice;
+            if (totalItemCost <= UIUtility.Instance.GetTotalMoney())
+                EventService.Instance.OnItemBought.InvokeEvent(itemData);
+            else
+            {
+                UIUtility.Instance.ShowNoMoneyNotification();
+            }
+            // EventService.Instance.OnSuccessfulTransaction.InvokeEvent(itemData.buyingPrice * itemQuantity);
+        }
+        else
+        {
+            EventService.Instance.OnItemSold.InvokeEvent(itemData);
+            //EventService.Instance.OnItemSold.InvokeEvent(itemData);
+        }
     }
 
     private void ClosePopUp() => gameObject.SetActive(false);

@@ -31,8 +31,8 @@ public class ShopView : MonoBehaviour
         allFilterButton.onClick.AddListener(FilterAll);
 
 
-        shopController.CreateShopItemsCards();
-        shopController.UpdateItemCardsList();
+        shopController.ResetShop();
+        //shopController.UpdateItemCardsList();
     }
 
     private void Update()

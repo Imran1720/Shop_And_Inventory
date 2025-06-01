@@ -1,38 +1,32 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopSpawner : MonoBehaviour
+public class InventorySpawner : MonoBehaviour
 {
     [Header("Script")]
-    private ShopView shopView;
+    private InventoryView inventoryView;
 
     [Header("Objects")]
-    [SerializeField] private GameObject shopPrefab;
+    [SerializeField] private GameObject inventoryPrefab;
     [SerializeField] private GameObject itemCardPrefab;
     [SerializeField] private ItemDataBase itemDatabase;
 
-    [Header("Data")]
-    [SerializeField] public int initialShopItemCount;
-    [SerializeField] private int shopRefreshTime;
+    [Header("Objects")]
+    [SerializeField] private int maxInvnetoryWeight;
 
     private List<ItemData> allGameItems;
-
-
-
     private void Start()
     {
         allGameItems = new List<ItemData>();
         LoadAllItemData();
+        GameObject inventory = Instantiate(inventoryPrefab) as GameObject;
+        inventory.transform.SetParent(transform, false);
 
-        GameObject shop = Instantiate(shopPrefab) as GameObject;
-        shop.transform.SetParent(transform, false);
+        inventoryView = inventory.GetComponent<InventoryView>();
+        InventoryModel inventoryModel = new InventoryModel(itemCardPrefab, allGameItems, maxInvnetoryWeight);
 
-        shopView = shop.GetComponent<ShopView>();
-        ShopModel shopModel = new ShopModel(itemCardPrefab, allGameItems, initialShopItemCount, shopRefreshTime);
-
-        ShopController controller = new ShopController(shopView, shopModel);
+        InventoryController controller = new InventoryController(inventoryView, inventoryModel);
     }
 
     private void LoadAllItemData()
@@ -69,5 +63,4 @@ public class ShopSpawner : MonoBehaviour
 
         return newData;
     }
-
 }

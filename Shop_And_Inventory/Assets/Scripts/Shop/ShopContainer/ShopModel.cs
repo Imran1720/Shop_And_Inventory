@@ -13,6 +13,7 @@ public class ShopModel
 
     public int defaultItemsSpawnCount;
     private int shopRefreshTime;
+    int totalItemsAdded = 0;
 
     public ShopModel(GameObject _itemCardPrefab,
         List<ItemData> _allGameItems,
@@ -23,6 +24,7 @@ public class ShopModel
         allGameItems = _allGameItems;
         defaultItemsSpawnCount = _defaultItemsSpawnCount;
         shopRefreshTime = _shopRefreshTime;
+
         spawnedItemCardsList = new List<GameObject>();
     }
 
@@ -36,7 +38,10 @@ public class ShopModel
 
     public int GetDefaultSpawnCount() => defaultItemsSpawnCount;
 
-    public void AddSpawnedItemCardToList(GameObject _newCard) => spawnedItemCardsList.Add(_newCard);
+    public void AddSpawnedItemCardToList(GameObject _newCard)
+    {
+        spawnedItemCardsList.Add(_newCard);
+    }
 
     public Item GetItemCardAtIndex(int index) => spawnedItemCardsList[index]?.GetComponent<Item>();
 
@@ -79,4 +84,7 @@ public class ShopModel
     public int GetShopRefreshTime() => shopRefreshTime;
     //Doubt
     public void SetItemContainer(GameObject _container) => itemContainer = _container;
+    public int GetTotalItemsAdded() => totalItemsAdded;
+    public void IncrementTotalItemCount() => totalItemsAdded++;
+
 }

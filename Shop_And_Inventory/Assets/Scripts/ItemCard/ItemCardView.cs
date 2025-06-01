@@ -24,10 +24,10 @@ public class ItemCardView : MonoBehaviour
     [SerializeField] private Button decrementButton;
     [SerializeField] private Button incrementButton;
 
-    [Header("PANELS")]
-    [SerializeField] private GameObject popUPPannel;
+
 
     private ItemCardController itemCardController;
+
 
     private void Start()
     {
@@ -38,13 +38,14 @@ public class ItemCardView : MonoBehaviour
 
     public void RefreshUI(ItemData _data, Sprite _itemCardBG, Color _color, int count)
     {
+        int price = _data.isShopItem == true ? _data.buyingPrice : _data.sellingPrice;
         itemCardBG.sprite = _itemCardBG;
         itemName.color = _color;
         itemName.text = _data.itemName;
         icon.sprite = _data.icon;
         itemClassification.text = _data.itemClassification;
         itemQuantity.text = "Count : " + _data.quantity.ToString();
-        itemPrice.text = _data.buyingPrice.ToString();
+        itemPrice.text = price.ToString();
         itemWeight.text = _data.weight.ToString();
         itemDescription.text = _data.description;
         itemTobeBoughtCountText.text = count.ToString();

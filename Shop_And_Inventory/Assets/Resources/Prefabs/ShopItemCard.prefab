@@ -1770,10 +1770,9 @@ GameObject:
   - component: {fileID: 5291735651820681065}
   - component: {fileID: 5291735651820681079}
   - component: {fileID: 5291735651820681078}
-  - component: {fileID: 5291735651820681076}
   - component: {fileID: 1457209714978446441}
   m_Layer: 5
-  m_Name: ItemCard
+  m_Name: ShopItemCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1850,32 +1849,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5291735651820681076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5291735651820681064}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f4b7ca5b237f944aaab5ebe62665f5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemName: {fileID: 5291735650955196688}
-  itemClassification: {fileID: 5291735652271118417}
-  itemQuantity: {fileID: 5291735651962942584}
-  itemPrice: {fileID: 5291735650306942065}
-  itemWeight: {fileID: 5291735650585288179}
-  itemDescription: {fileID: 5291735651725587151}
-  itemCountTobeBoughtText: {fileID: 5291735651244584622}
-  icon: {fileID: 5291735651688791344}
-  itemCardBG: {fileID: 5291735651820681078}
-  bgSprites: {fileID: 11400000, guid: c1b1499ec55d1c84195f1193d33d70bd, type: 2}
-  buyButton: {fileID: 5291735652153284276}
-  decrementButton: {fileID: 5291735650426461516}
-  incrementButton: {fileID: 5291735651492102568}
-  popUPPannel: {fileID: 0}
 --- !u!114 &1457209714978446441
 MonoBehaviour:
   m_ObjectHideFlags: 0

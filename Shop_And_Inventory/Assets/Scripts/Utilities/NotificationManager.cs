@@ -12,6 +12,8 @@ public class NotificationManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI notificationText;
     [SerializeField] private Slider slider;
 
+    [SerializeField] private Color defaultColor;
+    [SerializeField] private Color warningColor;
 
     private float timer;
 
@@ -32,14 +34,21 @@ public class NotificationManager : MonoBehaviour
         slider.value = timer;
         if (timer <= 0)
         {
+            notificationText.color = defaultColor;
             HideNotification();
         }
     }
 
     private void HideNotification() => gameObject.SetActive(false);
-    public void SetNotificationData(string itemName)
+    public void SetNotificationData(string _text)
     {
-        notificationText.text = "You Bought a " + itemName;
+        notificationText.text = _text;
+        ResetTimer();
+    }
+    public void SetWarningNotificationData(string _text)
+    {
+        notificationText.color = warningColor;
+        notificationText.text = _text;
         ResetTimer();
     }
 

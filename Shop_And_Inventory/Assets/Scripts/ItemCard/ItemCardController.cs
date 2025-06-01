@@ -14,16 +14,18 @@ public class ItemCardController
         itemCardView.SetController(this);
         itemCardModel.SetController(this);
 
-        EventService.Instance.OnShopRefresh.AddListener(SetItem);
+        EventService.Instance.OnShopRefresh.AddListener(OnShopRefresh);
         EventService.Instance.OnShopUpdate.AddListener(SetItem);
         EventService.Instance.OnItemSelected.AddListener(SetItem);
+        EventService.Instance.OnItemGathered.AddListener(OnItemGathered);
     }
 
     ~ItemCardController()
     {
-        EventService.Instance.OnShopRefresh.RemoveListener(SetItem);
+        EventService.Instance.OnShopRefresh.RemoveListener(OnShopRefresh);
         EventService.Instance.OnShopUpdate.RemoveListener(SetItem);
         EventService.Instance.OnItemSelected.RemoveListener(SetItem);
+        EventService.Instance.OnItemGathered.RemoveListener(OnItemGathered);
     }
 
     public void SetItem(ItemData _data)
@@ -33,6 +35,16 @@ public class ItemCardController
         RefreshUI();
     }
 
+    private void OnShopRefresh(ItemData _data)
+    {
+        if (UIUtility.Instance.IsShopCardActive())
+            SetItem(_data);
+    }
+    private void OnItemGathered(ItemData _data)
+    {
+        if (!UIUtility.Instance.IsShopCardActive())
+            SetItem(_data);
+    }
     public void RefreshUI()
     {
         ItemData data = itemCardModel.GetItemData();
@@ -67,6 +79,7 @@ public class ItemCardController
         }
         PopUpManager.Instance.SetData(itemCardModel.GetCurrentItem(), itemCardModel.GetNumberOfItemsToBuy());
     }
+
 
     private void OnBuyPopUp(ItemData _data)
     {
