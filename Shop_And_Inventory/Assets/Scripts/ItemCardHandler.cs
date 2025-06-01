@@ -8,31 +8,32 @@ using UnityEngine.UI;
 public class ItemCardHandler : MonoBehaviour
 {
     public static ItemCardHandler Instance;
-    private ItemData currentItem;
 
+    [Header("TEXTS")]
     [SerializeField] private TextMeshProUGUI itemName;
-    [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI itemClassification;
     [SerializeField] private TextMeshProUGUI itemQuantity;
     [SerializeField] private TextMeshProUGUI itemPrice;
     [SerializeField] private TextMeshProUGUI itemWeight;
     [SerializeField] private TextMeshProUGUI itemDescription;
+    [SerializeField] private TextMeshProUGUI itemCountTobeBoughtText;
 
+    [Header("IMAGES")]
+    [SerializeField] private Image icon;
     [SerializeField] private Image itemCardBG;
 
-    [SerializeField] private Color legendary;
-    [SerializeField] private Color epic;
-    [SerializeField] private Color rare;
-    [SerializeField] private Color common;
-
+    [Header("SCRIPTABLE OBJECTS")]
     [SerializeField] private ItemSpriteSO bgSprites;
 
+    [Header("BUTTONS")]
     [SerializeField] private Button buyButton;
     [SerializeField] private Button decrementButton;
     [SerializeField] private Button incrementButton;
-    [SerializeField] private TextMeshProUGUI itemCountTobeBoughtText;
+
+    [Header("PANELS")]
     [SerializeField] private GameObject popUPPannel;
 
+    private ItemData currentItem;
     private int itemCount;
     private int itemToBeBoughtCount;
     private void Awake()
@@ -49,7 +50,7 @@ public class ItemCardHandler : MonoBehaviour
     {
         currentItem = _item;
         itemCount = currentItem.quantity;
-        itemToBeBoughtCount = 0;
+        itemToBeBoughtCount = 1;
         itemCountTobeBoughtText.text = itemToBeBoughtCount.ToString();
         UpdateData();
     }
@@ -71,10 +72,10 @@ public class ItemCardHandler : MonoBehaviour
     {
         switch (itemRarity)
         {
-            case Rarity.LEGENDARY: return legendary;
-            case Rarity.EPIC: return epic;
-            case Rarity.RARE: return rare;
-            case Rarity.COMMON: return common;
+            case Rarity.LEGENDARY: return Color.yellow;
+            case Rarity.EPIC: return Color.magenta;
+            case Rarity.RARE: return Color.cyan;
+            case Rarity.COMMON: return Color.green;
             default: return Color.white;
 
         }
@@ -121,6 +122,6 @@ public class ItemCardHandler : MonoBehaviour
         }
         int cost = itemToBeBoughtCount * currentItem.buyingPrice;
         popUPPannel.SetActive(true);
-        PopUpManager.Instance.SetData(currentItem, itemToBeBoughtCount);
+        //PopUpManager.Instance.SetData(currentItem, itemToBeBoughtCount);
     }
 }

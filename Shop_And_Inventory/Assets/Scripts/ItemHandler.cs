@@ -27,13 +27,13 @@ public class ItemHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        EventService.Instance.OnItemBought.AddListener(UpdateListAfterBuying);
+        //EventService.Instance.OnItemBought.AddListener(UpdateListAfterBuying);
     }
 
     private void OnDisable()
     {
 
-        EventService.Instance.OnItemBought.RemoveListener(UpdateListAfterBuying);
+        //EventService.Instance.OnItemBought.RemoveListener(UpdateListAfterBuying);
     }
     void Start()
     {
@@ -110,7 +110,7 @@ public class ItemHandler : MonoBehaviour
             if (itemCell != null)
             {
                 int itemIndex = Random.Range(0, itemsDataList.Count);
-                itemCell.SetItemData(itemsDataList[itemIndex], i);
+                //itemCell.SetItemData(itemsDataList[itemIndex], i);
             }
         }
         ItemCardHandler.Instance.SetItem(itemsObjectList[0].GetComponent<Item>().currentItemData);
@@ -229,26 +229,11 @@ public class ItemHandler : MonoBehaviour
         }
         else
         {
-            ItemCardHandler.Instance.SetItem(itemsObjectList[0].GetComponent<Item>().currentItemData);
             itemsObjectList[_updatedData.id].transform.GetComponent<Item>().updateItemCount(_updatedData.quantity);
-        }
 
+            ItemCardHandler.Instance.SetItem(itemsObjectList[0].GetComponent<Item>().currentItemData);
+        }
 
     }
 }
 
-
-public struct ItemData
-{
-    public int id;
-    public string itemName;
-    public string itemClassification;
-    public ItemType itemType;
-    public Rarity itemRarity;
-    public Sprite icon;
-    public int buyingPrice;
-    public int sellingPrice;
-    public int weight;
-    public int quantity;
-    public string description;
-}
