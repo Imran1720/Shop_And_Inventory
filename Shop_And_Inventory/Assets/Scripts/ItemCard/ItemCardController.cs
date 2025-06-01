@@ -37,12 +37,12 @@ public class ItemCardController
 
     private void OnShopRefresh(ItemData _data)
     {
-        if (UIUtility.Instance.IsShopCardActive())
+        if (GameService.instance.UIManager.IsShopCardActive())
             SetItem(_data);
     }
     private void OnItemGathered(ItemData _data)
     {
-        if (!UIUtility.Instance.IsShopCardActive())
+        if (!GameService.instance.UIManager.IsShopCardActive())
             SetItem(_data);
     }
     public void RefreshUI()
@@ -77,7 +77,7 @@ public class ItemCardController
         {
             return;
         }
-        PopUpManager.Instance.SetData(itemCardModel.GetCurrentItem(), itemCardModel.GetNumberOfItemsToBuy());
+        GameService.instance.UIManager.SetBuyPopUpData(itemCardModel.GetCurrentItem(), itemCardModel.GetNumberOfItemsToBuy());
     }
 
 

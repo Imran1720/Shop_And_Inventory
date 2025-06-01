@@ -36,7 +36,7 @@ public class InventoryController
         {
             if (!inventoryModel.CanAddItem())
             {
-                UIUtility.Instance.ShowInventoryFullNotification();
+                GameService.instance.UIManager.ShowInventoryFullNotification();
                 return;
             }
             ItemData newDataItem = CreateItemData();
@@ -90,7 +90,7 @@ public class InventoryController
         _data.isShopItem = false;
         if (!inventoryModel.CanAddItem())
         {
-            UIUtility.Instance.ShowInventoryFullNotification();
+            GameService.instance.UIManager.ShowInventoryFullNotification();
             return;
         }
         (bool isItemPresent, int itemId) = IsItemPresentInInventory(_data.itemName);
@@ -107,7 +107,7 @@ public class InventoryController
             UpdateItemData(newItem, _data, id);
             inventoryModel.AddItemToInventory(newItem);
         }
-        UIUtility.Instance.DecrementCoins(_data.buyingPrice * _data.quantity);
+        GameService.instance.UIManager.DecrementCoins(_data.buyingPrice * _data.quantity);
         inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
     }
 
@@ -131,7 +131,7 @@ public class InventoryController
                 }
             }
         }
-        UIUtility.Instance.IncrementCoins(_data.sellingPrice * _data.quantity);
+        GameService.instance.UIManager.IncrementCoins(_data.sellingPrice * _data.quantity);
         inventoryView.SetInventoryWeight(inventoryModel.GetCurrentInventoryWeight());
     }
 

@@ -14,7 +14,6 @@ public class Item : MonoBehaviour, IPointerDownHandler
     [SerializeField] private Image containerImage;
     public ItemData currentItemData;
 
-
     public void SetItemData(ItemData item, int id)
     {
         currentItemData = item;
@@ -26,7 +25,7 @@ public class Item : MonoBehaviour, IPointerDownHandler
     {
         itemIcon.sprite = item.icon;
         itemCount.text = item.quantity.ToString();
-        containerImage.sprite = UIUtility.Instance.GetButtonRarity(item.itemRarity);
+        containerImage.sprite = GameService.instance.GetButtonRarity(item.itemRarity);
     }
 
     public ItemType GetItemType()

@@ -13,8 +13,6 @@ public class PopUpManager : MonoBehaviour
     [SerializeField] private Button cancelButton;
 
     ItemData itemData;
-    int itemQuantity = 0;
-
     private void Awake()
     {
         Instance = this;
@@ -44,7 +42,7 @@ public class PopUpManager : MonoBehaviour
     {
         itemData = _itemData;
         itemData.quantity = _itemCount;
-        itemQuantity = _itemCount;
+        int temQuantity = _itemCount;
         if (itemData.isShopItem)
         {
             promptText.text = $"Do you want to buy {itemData.itemName} x{_itemCount} for {(itemData.buyingPrice * _itemCount)}?";
@@ -63,18 +61,16 @@ public class PopUpManager : MonoBehaviour
         if (itemData.isShopItem)
         {
             int totalItemCost = itemData.quantity * itemData.buyingPrice;
-            if (totalItemCost <= UIUtility.Instance.GetTotalMoney())
+            if (totalItemCost <= GameService.instance.UIManager.GetTotalMoney())
                 EventService.Instance.OnItemBought.InvokeEvent(itemData);
             else
             {
-                UIUtility.Instance.ShowNoMoneyNotification();
+                GameService.instance.UIManager.ShowOutOfFundNotification();
             }
-            // EventService.Instance.OnSuccessfulTransaction.InvokeEvent(itemData.buyingPrice * itemQuantity);
         }
         else
         {
             EventService.Instance.OnItemSold.InvokeEvent(itemData);
-            //EventService.Instance.OnItemSold.InvokeEvent(itemData);
         }
     }
 

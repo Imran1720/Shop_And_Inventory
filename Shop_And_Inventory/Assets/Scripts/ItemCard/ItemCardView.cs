@@ -57,7 +57,7 @@ public class ItemCardView : MonoBehaviour
 
     private void BuyItem()
     {
-        UIUtility.Instance.EnableBuyPopPanel();
+        GameService.instance.UIManager.ShowBuyPopUp();
         itemCardController.BuyItem();
     }
     public void SetController(ItemCardController _controller) => itemCardController = _controller;
