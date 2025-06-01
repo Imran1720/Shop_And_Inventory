@@ -93,6 +93,7 @@ public class NotificationUIManager : MonoBehaviour, INotificationManager
     }
     private void EnableNotification()
     {
+        SoundManager.Instance.PlaySoundFX(Sounds.NOTIFICATION);
         ShowNotificationUI();
         ResetData();
     }

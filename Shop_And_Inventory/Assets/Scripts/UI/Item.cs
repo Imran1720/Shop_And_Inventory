@@ -35,6 +35,7 @@ public class Item : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        SoundManager.Instance.PlaySoundFX(Sounds.BUTTON_CLICK);
         EventService.Instance.OnItemSelected.InvokeEvent(currentItemData);
     }
 

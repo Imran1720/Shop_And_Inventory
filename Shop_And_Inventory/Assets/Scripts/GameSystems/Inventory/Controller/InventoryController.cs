@@ -29,7 +29,7 @@ public class InventoryController
 
     public void GatherItems()
     {
-
+        SoundManager.Instance.PlaySoundFX(Sounds.ITEM_GATHER);
         int numberOfCardsToSpawn = inventoryModel.GetRandomSpawnCount();
         for (int i = 0; i < numberOfCardsToSpawn; i++)
         {

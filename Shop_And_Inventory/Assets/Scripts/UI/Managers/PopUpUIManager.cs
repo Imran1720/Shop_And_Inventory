@@ -76,6 +76,7 @@ public class PopUpUIManager : MonoBehaviour, IBuyPopUpManager
 
     private void ClosePopUp()
     {
+        SoundManager.Instance.PlaySoundFX(Sounds.CANCEL);
         popUpPanelBG.enabled = false;
         popUpPanel.SetActive(false);
     }

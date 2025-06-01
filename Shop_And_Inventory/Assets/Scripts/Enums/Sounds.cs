@@ -4,7 +4,8 @@ public enum Sounds
     BUTTON_CLICK,
     NOTIFICATION,
     WARNING,
-    BUY,
-    SELL,
+    ITEM_GATHER,
+    CANCEL,
+    POPUP
 }
 

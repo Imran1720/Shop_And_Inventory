@@ -46,6 +46,7 @@ public class ItemCardController
 
     public void DecreaseItemCount()
     {
+        SoundManager.Instance.PlaySoundFX(Sounds.BUTTON_CLICK);
         int count = itemCardModel.GetNumberOfItemsToBuy();
         if (count > 1)
         {
@@ -56,6 +57,7 @@ public class ItemCardController
 
     public void IncreaseItemCount()
     {
+        SoundManager.Instance.PlaySoundFX(Sounds.BUTTON_CLICK);
         int count = itemCardModel.GetNumberOfItemsToBuy();
         int maxItemAvailablity = itemCardModel.GetMaxItemAvailableQuantity();
 
@@ -68,6 +70,7 @@ public class ItemCardController
 
     public void BuyItem()
     {
+        SoundManager.Instance.PlaySoundFX(Sounds.POPUP);
         int itemQuantity = itemCardModel.GetNumberOfItemsToBuy();
         ItemData item = itemCardModel.GetCurrentItem();
 

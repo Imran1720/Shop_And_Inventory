@@ -69,6 +69,8 @@ public class ShopController
 
     private void OnItemSold(ItemData _data)
     {
+        SoundManager.Instance.PlaySoundFX(Sounds.ITEM_GATHER);
+
         GameObject itemObject = CreateNewItemCard();
         shopModel.AddSpawnedItemCardToList(itemObject);
 
@@ -136,6 +138,7 @@ public class ShopController
 
         if (timer <= 0)
         {
+            SoundManager.Instance.PlaySoundFX(Sounds.CANCEL);
             ResetShop();
         }
     }
