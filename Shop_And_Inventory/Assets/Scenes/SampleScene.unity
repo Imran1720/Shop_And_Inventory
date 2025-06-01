@@ -699,6 +699,7 @@ MonoBehaviour:
   notificationDuration: 3
   inventoryFullMessage: Inventory is Full!!
   outOfFundMessage: Insufficient Coins!!
+  buyPopUpUIManager: {fileID: 476375860}
   buyPopUPPanel: {fileID: 476375855}
 --- !u!1 &364138582
 GameObject:
@@ -884,14 +885,14 @@ GameObject:
   - component: {fileID: 476375856}
   - component: {fileID: 476375858}
   - component: {fileID: 476375857}
-  - component: {fileID: 476375859}
+  - component: {fileID: 476375860}
   m_Layer: 5
   m_Name: BuyPopUpPannel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &476375856
 RectTransform:
   m_ObjectHideFlags: 0
@@ -951,7 +952,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 476375855}
   m_CullTransparentMesh: 1
---- !u!114 &476375859
+--- !u!114 &476375860
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -960,12 +961,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 476375855}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93eb6994f2ef69a4c84c9bdbb4b132ce, type: 3}
+  m_Script: {fileID: 11500000, guid: ee04a8859f7210847bb89ce755cdce20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   promptText: {fileID: 1301846065}
   acceptButton: {fileID: 789374069}
   cancelButton: {fileID: 185657363}
+  popUpPanel: {fileID: 364138582}
+  popUpPanelBG: {fileID: 476375857}
 --- !u!1 &493096895
 GameObject:
   m_ObjectHideFlags: 0
@@ -1770,7 +1773,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 337331032}
-  itemButtonRarityCart: []
+  buttonRaritySpritesList:
+  - {fileID: 21300000, guid: 2a52ea984fca331448a9766cd8919537, type: 3}
+  - {fileID: 21300000, guid: 01f75c9e33bf0484fa1ce476c1e85ac2, type: 3}
+  - {fileID: 21300000, guid: 414c9b9477fa0204ebaf37b1d740be93, type: 3}
+  - {fileID: 21300000, guid: 555cc34d032222a4f94d92cc98fc930c, type: 3}
+  - {fileID: 21300000, guid: 63c0208f95e8229409e6878bcae64ab8, type: 3}
+  itemDatabase: {fileID: 11400000, guid: 7e92646f84019cd43a9ada120cf20fae, type: 2}
 --- !u!1 &1301846063
 GameObject:
   m_ObjectHideFlags: 0

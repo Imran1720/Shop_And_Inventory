@@ -5,25 +5,26 @@ public class ItemCardModel
     private ItemCardController itemCardController;
 
     private ItemData currentItem;
-    private int itemCount;
-    private int itemsToBeBought;
-    private ItemSpriteSO bgSpriteSO;
+    private int currentitemQuantity;
+    private int itemsToBeBought = 1;
+    private ItemSpriteSO backgroundSpritesSO;
 
-    public ItemCardModel(ItemSpriteSO _bgSprites)
+    public ItemCardModel(ItemSpriteSO _bgSpritesSO)
     {
-        bgSpriteSO = _bgSprites;
-        itemsToBeBought = 1;
+        backgroundSpritesSO = _bgSpritesSO;
+    }
+    public void SetItem(ItemData _item)
+    {
+        currentItem = _item;
+        currentitemQuantity = _item.quantity;
     }
 
+    public ItemData GetCurrentItem() => currentItem;
+    public int GetItemBuyingPrice() => currentItem.buyingPrice;
+    public int GetItemSellingPrice() => currentItem.sellingPrice;
+    public int GetMaxItemAvailableQuantity() => currentitemQuantity;
+    public int GetNumberOfItemsToBuy() => itemsToBeBought;
 
-    public void SetItem(ItemData _data)
-    {
-        currentItem = _data;
-        itemCount = _data.quantity;
-    }
-
-
-    public ItemData GetItemData() => currentItem;
     public Color GetTitleColor(Rarity itemRarity)
     {
         switch (itemRarity)
@@ -36,28 +37,20 @@ public class ItemCardModel
 
         }
     }
-
     public Sprite GetBGSprite(Rarity itemRarity)
     {
 
         switch (itemRarity)
         {
-            case Rarity.LEGENDARY: return bgSpriteSO.legendaryBG;
-            case Rarity.EPIC: return bgSpriteSO.epicBG;
-            case Rarity.RARE: return bgSpriteSO.rareBG;
-            case Rarity.COMMON: return bgSpriteSO.commonBG;
-            default: return bgSpriteSO.veryCommonBG;
+            case Rarity.LEGENDARY: return backgroundSpritesSO.legendaryBG;
+            case Rarity.EPIC: return backgroundSpritesSO.epicBG;
+            case Rarity.RARE: return backgroundSpritesSO.rareBG;
+            case Rarity.COMMON: return backgroundSpritesSO.commonBG;
+            default: return backgroundSpritesSO.veryCommonBG;
 
         }
     }
 
     public void SetNumberOfItemsToBuy(int value) => itemsToBeBought = value;
-    public int GetNumberOfItemsToBuy() => itemsToBeBought;
-
-    public int GetMaxItemAvailableCount() => itemCount;
-    public int GetItemBuyingPrice() => currentItem.buyingPrice;
-
     public void SetController(ItemCardController _controller) => itemCardController = _controller;
-
-    public ItemData GetCurrentItem() => currentItem;
 }

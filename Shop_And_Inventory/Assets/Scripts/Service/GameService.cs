@@ -9,7 +9,10 @@ public class GameService : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     public UIManager UIManager => uiManager;
 
-    [SerializeField] List<Sprite> itemButtonRarityCart;
+    [SerializeField] List<Sprite> buttonRaritySpritesList;
+
+    [SerializeField] private ItemDataBase itemDatabase;
+    private DataSevice dataSevice;
 
     private void Awake()
     {
@@ -21,9 +24,11 @@ public class GameService : MonoBehaviour
         instance = this;
     }
 
-
-    public Sprite GetButtonRarity(Rarity _rarity)
+    private void Start()
     {
-        return itemButtonRarityCart[(int)_rarity];
+        dataSevice = new DataSevice(itemDatabase);
     }
+
+    public Sprite GetButtonRarity(Rarity _rarity) => buttonRaritySpritesList[(int)_rarity];
+    public List<ItemData> GetGameItemList() => dataSevice.GetAllGameItemsList();
 }

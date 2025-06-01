@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
     [Header("Notification Data")]
     [SerializeField] private NotificationUIManager notificationUIManager;
     [SerializeField] private float notificationDuration;
+
+    [Header("Notification Messages")]
     [SerializeField] private string inventoryFullMessage;
     [SerializeField] private string outOfFundMessage;
 

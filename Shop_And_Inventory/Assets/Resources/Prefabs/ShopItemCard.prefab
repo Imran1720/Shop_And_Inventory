@@ -1861,19 +1861,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57907ee3d4974504ea2a5a10fa672eb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: {fileID: 5291735650955196688}
-  itemClassification: {fileID: 5291735652271118417}
-  itemQuantity: {fileID: 5291735651962942584}
-  itemPrice: {fileID: 5291735650306942065}
-  itemWeight: {fileID: 5291735650585288179}
-  itemDescription: {fileID: 5291735651725587151}
-  itemTobeBoughtCountText: {fileID: 5291735651244584622}
-  icon: {fileID: 5291735651688791344}
-  itemCardBG: {fileID: 5291735651820681078}
+  itemNameText: {fileID: 5291735650955196688}
+  itemClassificationText: {fileID: 5291735652271118417}
+  itemQuantityText: {fileID: 5291735651962942584}
+  itemPriceText: {fileID: 5291735650306942065}
+  itemWeightText: {fileID: 5291735650585288179}
+  itemDescriptionText: {fileID: 5291735651725587151}
+  itemToBeBoughtCountText: {fileID: 5291735651244584622}
+  itemIcon: {fileID: 5291735651688791344}
+  itemCardBackground: {fileID: 5291735651820681078}
   buyButton: {fileID: 5291735652153284276}
   decrementButton: {fileID: 5291735650426461516}
   incrementButton: {fileID: 5291735651492102568}
-  popUPPannel: {fileID: 0}
 --- !u!1 &5291735651962942586
 GameObject:
   m_ObjectHideFlags: 0

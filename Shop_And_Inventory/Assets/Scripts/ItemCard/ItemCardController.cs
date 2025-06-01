@@ -5,7 +5,6 @@ public class ItemCardController
     private ItemCardView itemCardView;
     private ItemCardModel itemCardModel;
 
-
     public ItemCardController(ItemCardView _view, ItemCardModel _model)
     {
         itemCardView = _view;
@@ -28,66 +27,69 @@ public class ItemCardController
         EventService.Instance.OnItemGathered.RemoveListener(OnItemGathered);
     }
 
-    public void SetItem(ItemData _data)
+    public void SetItem(ItemData _item)
     {
-        itemCardModel.SetItem(_data);
+        itemCardModel.SetItem(_item);
         Reset();
         RefreshUI();
     }
 
-    private void OnShopRefresh(ItemData _data)
-    {
-        if (GameService.instance.UIManager.IsShopCardActive())
-            SetItem(_data);
-    }
-    private void OnItemGathered(ItemData _data)
-    {
-        if (!GameService.instance.UIManager.IsShopCardActive())
-            SetItem(_data);
-    }
     public void RefreshUI()
     {
-        ItemData data = itemCardModel.GetItemData();
-        itemCardView.RefreshUI(data, itemCardModel.GetBGSprite(data.itemRarity), itemCardModel.GetTitleColor(data.itemRarity), itemCardModel.GetNumberOfItemsToBuy());
+        ItemData item = itemCardModel.GetCurrentItem();
+
+        itemCardView.RefreshUI(item,
+            itemCardModel.GetBGSprite(item.itemRarity),
+            itemCardModel.GetTitleColor(item.itemRarity),
+            itemCardModel.GetNumberOfItemsToBuy());
     }
 
     public void DecreaseItemCount()
     {
         int count = itemCardModel.GetNumberOfItemsToBuy();
-        if (count >= 1)
+        if (count > 1)
         {
-            itemCardModel.SetNumberOfItemsToBuy(--count);
+            itemCardModel.SetNumberOfItemsToBuy(count - 1);
         }
-        itemCardView.UpdateBuyingItemCount(count);
+        itemCardView.UpdateBuyingItemCount(itemCardModel.GetNumberOfItemsToBuy());
     }
 
     public void IncreaseItemCount()
     {
         int count = itemCardModel.GetNumberOfItemsToBuy();
-        if (count < itemCardModel.GetMaxItemAvailableCount())
-        {
-            itemCardModel.SetNumberOfItemsToBuy(++count);
-        }
+        int maxItemAvailablity = itemCardModel.GetMaxItemAvailableQuantity();
 
-        itemCardView.UpdateBuyingItemCount(count);
+        if (count < maxItemAvailablity)
+        {
+            itemCardModel.SetNumberOfItemsToBuy(count + 1);
+        }
+        itemCardView.UpdateBuyingItemCount(itemCardModel.GetNumberOfItemsToBuy());
     }
+
     public void BuyItem()
     {
-        if (itemCardModel.GetNumberOfItemsToBuy() <= 0)
-        {
-            return;
-        }
-        GameService.instance.UIManager.SetBuyPopUpData(itemCardModel.GetCurrentItem(), itemCardModel.GetNumberOfItemsToBuy());
+        int itemQuantity = itemCardModel.GetNumberOfItemsToBuy();
+        ItemData item = itemCardModel.GetCurrentItem();
+
+        if (itemQuantity <= 0) return;
+
+        GameService.instance.UIManager.SetBuyPopUpData(item, itemQuantity);
+        GameService.instance.UIManager.ShowBuyPopUp();
     }
 
-
-    private void OnBuyPopUp(ItemData _data)
-    {
-        itemCardModel.SetItem(_data);
-        Reset();
-    }
     public void Reset()
     {
         itemCardModel.SetNumberOfItemsToBuy(1);
+    }
+
+    private void OnShopRefresh(ItemData _item)
+    {
+        if (GameService.instance.UIManager.IsShopCardActive())
+            SetItem(_item);
+    }
+    private void OnItemGathered(ItemData _item)
+    {
+        if (!GameService.instance.UIManager.IsShopCardActive())
+            SetItem(_item);
     }
 }
