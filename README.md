@@ -21,15 +21,6 @@ Here’s what I built 👇
 <li>UI dynamically updates selected item in an ItemCard with detailed info and contextual buy/sell option</li>
 </ol>
 
-## How I Applied Design Patterns:
-<ol>
-    <ul>
-      <li>The character moves in two directions (⬅️➡️) using <b>A</b> & <b>D</b> respectively. And <b>JUMP</b> using Spacebar</li>
-         <li> Collect all the keys to open the gate</li></li>
-         <li>Avoid Spikes or Patrolling Enemies</li>
-    </ul>
-</ol>
-
 ## 🎯 How I Applied Design Patterns:
 <ol>
     <li><b>Singleton:</b> For services like <b>EventService</b> and <b>GameService</b> while prototyping — making event dispatching and shared data access universal and clean</li>
