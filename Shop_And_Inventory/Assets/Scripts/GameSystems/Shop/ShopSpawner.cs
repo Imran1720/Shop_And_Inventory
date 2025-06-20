@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ShopSpawner : MonoBehaviour
@@ -9,8 +6,8 @@ public class ShopSpawner : MonoBehaviour
     private ShopView shopView;
 
     [Header("Objects")]
-    [SerializeField] private GameObject shopPrefab;
-    [SerializeField] private GameObject itemCardPrefab;
+    [SerializeField] private ShopView shopPrefab;
+    [SerializeField] private Item itemCardPrefab;
     [SerializeField] private ItemDataBase itemDatabase;
 
     [Header("Data")]
@@ -19,11 +16,15 @@ public class ShopSpawner : MonoBehaviour
 
     private void Start()
     {
-        GameObject shop = Instantiate(shopPrefab) as GameObject;
-        shop.transform.SetParent(transform, false);
+        CreateShop();
 
-        shopView = shop.GetComponent<ShopView>();
-        ShopModel shopModel = new ShopModel(itemCardPrefab, GameService.instance.GetGameItemList(), initialShopItemCount, shopRefreshTime);
+        ShopModel shopModel = new ShopModel(itemCardPrefab, GameService.Instance.GetGameItemList(), initialShopItemCount, shopRefreshTime);
         ShopController controller = new ShopController(shopView, shopModel);
+    }
+
+    private void CreateShop()
+    {
+        shopView = Instantiate(shopPrefab);
+        shopView.transform.SetParent(transform, false);
     }
 }

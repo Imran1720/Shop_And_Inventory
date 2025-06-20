@@ -19,17 +19,13 @@ public class CoinUIManager : MonoBehaviour, ICoinManager
         SetCoinUI();
     }
 
-    public int GetTotalCoins() => playerCoins;
-
-
     public void IncrementCoins(int amount)
     {
         playerCoins += amount;
         SetCoinUI();
     }
 
-    public void SetCoinUI()
-    {
-        coinText.text = playerCoins.ToString();
-    }
+    public int GetTotalCoins() => playerCoins;
+
+    public void SetCoinUI() => coinText.text = playerCoins.ToString();
 }

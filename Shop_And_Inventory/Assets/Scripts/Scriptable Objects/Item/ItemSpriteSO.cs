@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 [CreateAssetMenu(menuName = "ScriptableObject/BGSprite", fileName = "BGData")]
 public class ItemSpriteSO : ScriptableObject
 {

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class ShopController
@@ -13,16 +12,19 @@ public class ShopController
     {
         shopModel = _shopModel;
         shopView = _shopView;
-
         shopView.InitializeShopController(this);
-        shopModel.InitializeShopController(this);
 
-        EventService.Instance.OnItemBought.AddListener(OnBuyingItemFromShop);
-        EventService.Instance.OnItemSold.AddListener(OnItemSold);
-
+        AddObservers();
         ResetShop();
     }
-    ~ShopController()
+
+    private void AddObservers()
+    {
+        EventService.Instance.OnItemBought.AddListener(OnBuyingItemFromShop);
+        EventService.Instance.OnItemSold.AddListener(OnItemSold);
+    }
+
+    public void RemoveObservers()
     {
         EventService.Instance.OnItemBought.RemoveListener(OnBuyingItemFromShop);
         EventService.Instance.OnItemSold.RemoveListener(OnItemSold);
@@ -33,14 +35,14 @@ public class ShopController
         int numberOfCardsToSpawn = shopModel.GetDefaultSpawnCount();
         for (int i = 0; i < numberOfCardsToSpawn; i++)
         {
-            GameObject newItem = CreateNewItemCard();
+            Item newItem = CreateNewItemCard();
             shopModel.AddSpawnedItemCardToList(newItem);
         }
     }
 
-    private GameObject CreateNewItemCard()
+    private Item CreateNewItemCard()
     {
-        GameObject newItemCard = GameObject.Instantiate(shopModel.GetShopItemCard());
+        Item newItemCard = GameObject.Instantiate(shopModel.GetShopItemCard());
         newItemCard.transform.SetParent(shopView.GetItemContainer().transform, false);
         return newItemCard;
     }
@@ -50,7 +52,7 @@ public class ShopController
         int numberOfCardsToSpawn = shopModel.GetDefaultSpawnCount();
         for (int i = 0; i < numberOfCardsToSpawn; i++)
         {
-            Item itemCell = shopModel.GetItemCardAtIndex(i).GetComponent<Item>();
+            Item itemCell = shopModel.GetItemCardAtIndex(i);
             if (itemCell != null)
             {
                 ItemData newItem = GetRandomItem();
@@ -71,65 +73,75 @@ public class ShopController
     {
         SoundManager.Instance.PlaySoundFX(Sounds.ITEM_GATHER);
 
-        GameObject itemObject = CreateNewItemCard();
-        shopModel.AddSpawnedItemCardToList(itemObject);
+        Item newItem = CreateNewItemCard();
+        shopModel.AddSpawnedItemCardToList(newItem);
 
-        Item item = itemObject.GetComponent<Item>();
-        item.SetItemData(_data, shopModel.GetTotalItemsAdded());
+        newItem.SetItemData(_data, shopModel.GetTotalItemsAdded());
         shopModel.IncrementTotalItemCount();
     }
 
     public void ShowItemsOfType(ItemType _itemType)
     {
-        List<GameObject> shopItemsList = shopModel.GetShopItemsList();
+        SoundManager.Instance.PlaySoundFX(Sounds.ITEM_GATHER);
+        List<Item> shopItemsList = shopModel.GetShopItemsList();
 
-        foreach (GameObject _item in shopItemsList)
+        foreach (Item _item in shopItemsList)
         {
-            if (_item.GetComponent<Item>().GetItemType() != _itemType)
+            if (_item.GetItemType() != _itemType)
             {
-                _item.SetActive(false);
+                _item.gameObject.SetActive(false);
             }
             else
             {
-                _item.SetActive(true);
+                _item.gameObject.SetActive(true);
             }
         }
     }
 
     public void ShowAllItems()
     {
-        List<GameObject> shopItemsList = shopModel.GetShopItemsList();
+        SoundManager.Instance.PlaySoundFX(Sounds.ITEM_GATHER);
+        List<Item> shopItemsList = shopModel.GetShopItemsList();
 
-        foreach (GameObject item in shopItemsList)
+        foreach (Item item in shopItemsList)
         {
-            item.SetActive(true);
+            item.gameObject.SetActive(true);
         }
     }
-    private void OnBuyingItemFromShop(ItemData _updatedData)
-    {
-        UpdateItemInList(_updatedData);
-    }
+    private void OnBuyingItemFromShop(ItemData _updatedData) => UpdateItemInList(_updatedData);
+
     private void UpdateItemInList(ItemData data)
     {
-        List<GameObject> shopItemsList = shopModel.GetShopItemsList();
-        foreach (GameObject item in shopItemsList)
+        List<Item> shopItemsList = shopModel.GetShopItemsList();
+        foreach (Item item in shopItemsList)
         {
-            if (item != null && item.GetComponent<Item>().currentItemData.id == data.id)
+            if (item != null && item.currentItemData.id == data.id)
             {
-                int itemCount = item.GetComponent<Item>().currentItemData.quantity - data.quantity;
-                if (itemCount <= 0)
-                {
-                    shopModel.RemoveItemFromShop(item);
-                    GameObject.Destroy(item);
-                }
-                else
-                {
-                    item.GetComponent<Item>().updateItemCount(itemCount);
-                }
-                EventService.Instance.OnShopUpdate.InvokeEvent(shopModel.GetFirstItemInShop().GetComponent<Item>().currentItemData);
+                int itemCount = item.currentItemData.quantity - data.quantity;
+                UpdateOrRemoveItem(item, itemCount);
+
+                EventService.Instance.OnShopUpdate.InvokeEvent(shopModel.GetFirstItemInShop().currentItemData);
                 return;
             }
         }
+    }
+
+    private void UpdateOrRemoveItem(Item item, int itemCount)
+    {
+        if (itemCount <= 0)
+        {
+            RemoveItemFromShop(item);
+        }
+        else
+        {
+            item.updateItemCount(itemCount);
+        }
+    }
+
+    private void RemoveItemFromShop(Item item)
+    {
+        shopModel.RemoveItemFromList(item);
+        shopView.DeleteItem(item);
     }
 
     public void UpdateShopTimer()
@@ -138,29 +150,25 @@ public class ShopController
 
         if (timer <= 0)
         {
-            SoundManager.Instance.PlaySoundFX(Sounds.CANCEL);
             ResetShop();
         }
     }
 
     public void ResetShop()
     {
-        timer = shopModel.GetShopRefreshTime();
-        ClearShop();
+        EmptyShop();
         CreateShopItemsCards();
         UpdateItemInCardsList();
-        EventService.Instance.OnShopRefresh.InvokeEvent(shopModel.GetFirstItemInShop().GetComponent<Item>().currentItemData);
+        timer = shopModel.GetShopRefreshTime();
+        SoundManager.Instance.PlaySoundFX(Sounds.CANCEL);
+        EventService.Instance.OnShopRefresh.InvokeEvent(shopModel.GetFirstItemInShop().currentItemData);
     }
 
-    private void ClearShop()
+    private void EmptyShop()
     {
-        foreach (GameObject item in shopModel.GetShopItemsList())
-        {
-            GameObject.Destroy(item);
-        }
-        shopModel.RemoveAllItems();
+        shopView.EmptyShop(shopModel.GetShopItemsList());
+        shopModel.EmptyShop();
     }
-
 
     public float GetTime() => (int)timer;
 }

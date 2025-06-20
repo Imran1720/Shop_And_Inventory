@@ -24,7 +24,9 @@ public class ItemCardView : MonoBehaviour
 
     private ItemCardController itemCardController;
 
-    private void Start()
+    private void Start() => InitializeButtonListeners();
+
+    private void InitializeButtonListeners()
     {
         buyButton.onClick.AddListener(OnBuyButtonClicked);
         decrementButton.onClick.AddListener(OnDecrementButtonClicked);
@@ -33,12 +35,11 @@ public class ItemCardView : MonoBehaviour
 
     public void RefreshUI(ItemData _data, Sprite _itemCardBackground, Color _nameColor, int _buyingCount)
     {
-
         int price = _data.isShopItem == true ? _data.buyingPrice : _data.sellingPrice;
 
-        itemCardBackground.sprite = _itemCardBackground;
         itemNameText.color = _nameColor;
         itemNameText.text = _data.itemName;
+        itemCardBackground.sprite = _itemCardBackground;
 
         itemIcon.sprite = _data.icon;
         itemClassificationText.text = _data.itemClassification;
@@ -51,17 +52,12 @@ public class ItemCardView : MonoBehaviour
         itemToBeBoughtCountText.text = _buyingCount.ToString();
     }
 
+    private void OnDestroy() => itemCardController.RemoveObservers();
+    private void OnBuyButtonClicked() => itemCardController.BuyItem();
+    private void OnIncrementButtonClicked() => itemCardController.IncreaseItemCount();
     private void OnDecrementButtonClicked() => itemCardController.DecreaseItemCount();
 
-    private void OnIncrementButtonClicked() => itemCardController.IncreaseItemCount();
-
-    private void OnBuyButtonClicked()
-    {
-
-        itemCardController.BuyItem();
-    }
     public void SetController(ItemCardController _controller) => itemCardController = _controller;
-
     public void UpdateBuyingItemCount(int value) => itemToBeBoughtCountText.text = value.ToString();
 
 }

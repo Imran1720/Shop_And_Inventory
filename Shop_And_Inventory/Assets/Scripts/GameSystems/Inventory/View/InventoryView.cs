@@ -22,9 +22,9 @@ public class InventoryView : MonoBehaviour
     [Header("Weight Text")]
     [SerializeField] private TextMeshProUGUI weightText;
 
+    void Start() => InitializeListeners();
 
-    // Start is called before the first frame update
-    void Start()
+    private void InitializeListeners()
     {
         weaponFilterButton.onClick.AddListener(FilterWeapons);
         consumableFilterButton.onClick.AddListener(FilterConsumables);
@@ -34,14 +34,17 @@ public class InventoryView : MonoBehaviour
         gatherItemButton.onClick.AddListener(GatherItems);
     }
 
-    private void FilterAll() => inventoryController.ShowAllItems();
-    private void FilterWeapons() => inventoryController.FilterItemsOfType(ItemType.WEAPON);
-    private void FilterTreasure() => inventoryController.FilterItemsOfType(ItemType.TREASURE);
-    private void FilterMaterials() => inventoryController.FilterItemsOfType(ItemType.MATERIAL);
-    private void FilterConsumables() => inventoryController.FilterItemsOfType(ItemType.CONSUMABLE);
 
-    public void SetInventoryWeight(int value) => weightText.text = value.ToString();
-    private void GatherItems() => inventoryController.GatherItems();
+    private void FilterWeapons() => inventoryController.ShowItemOfType(ItemType.WEAPON);
+    private void FilterTreasure() => inventoryController.ShowItemOfType(ItemType.TREASURE);
+    private void FilterMaterials() => inventoryController.ShowItemOfType(ItemType.MATERIAL);
+    private void FilterConsumables() => inventoryController.ShowItemOfType(ItemType.CONSUMABLE);
+
     public GameObject GetItemContainer() => itemContainer;
+
+    private void OnDestroy() => inventoryController.RemoveObservers();
+    private void FilterAll() => inventoryController.ShowAllItems();
+    private void GatherItems() => inventoryController.GatherItems();
+    public void SetInventoryWeight(int value) => weightText.text = value.ToString();
     public void InitializeShopController(InventoryController _controller) => inventoryController = _controller;
 }

@@ -402,8 +402,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abcd4473c416b724fbc7d82ec5ea19e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryPrefab: {fileID: 2119049180486403761, guid: 5644e604061d25f4d91a4b1638642c4c, type: 3}
-  itemCardPrefab: {fileID: 4755337995676040515, guid: 6c7c04993e102974d99cf32ba16013d6, type: 3}
+  inventoryPrefab: {fileID: 1463975406902526174, guid: 5644e604061d25f4d91a4b1638642c4c, type: 3}
+  itemCardPrefab: {fileID: 5288948676643017866, guid: 6c7c04993e102974d99cf32ba16013d6, type: 3}
   itemDatabase: {fileID: 11400000, guid: 7e92646f84019cd43a9ada120cf20fae, type: 2}
   maxInvnetoryWeight: 100
 --- !u!1 &315511803
@@ -869,8 +869,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 725d63bebb192514d8a14d0af81ee252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopPrefab: {fileID: 2119049180486403761, guid: c701c81258bd4b1478503a2622b45a5e, type: 3}
-  itemCardPrefab: {fileID: 4755337995676040515, guid: 6c7c04993e102974d99cf32ba16013d6, type: 3}
+  shopPrefab: {fileID: 2119049180486403757, guid: c701c81258bd4b1478503a2622b45a5e, type: 3}
+  itemCardPrefab: {fileID: 5288948676643017866, guid: 6c7c04993e102974d99cf32ba16013d6, type: 3}
   itemDatabase: {fileID: 11400000, guid: 7e92646f84019cd43a9ada120cf20fae, type: 2}
   initialShopItemCount: 25
   shopRefreshTime: 10

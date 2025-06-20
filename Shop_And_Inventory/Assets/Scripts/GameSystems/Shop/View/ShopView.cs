@@ -21,8 +21,9 @@ public class ShopView : MonoBehaviour
     [Header("Timer Text")]
     [SerializeField] private TextMeshProUGUI timerText;
 
+    private void Start() => SetButtonListeners();
 
-    private void Start()
+    private void SetButtonListeners()
     {
         weaponFilterButton.onClick.AddListener(FilterWeapons);
         consumableFilterButton.onClick.AddListener(FilterConsumables);
@@ -37,18 +38,18 @@ public class ShopView : MonoBehaviour
         SetTimerText();
     }
 
-    private void SetTimerText()
-    {
-        timerText.text = shopController.GetTime().ToString();
-    }
-
     private void FilterAll() => shopController.ShowAllItems();
     private void FilterWeapons() => shopController.ShowItemsOfType(ItemType.WEAPON);
     private void FilterTreasure() => shopController.ShowItemsOfType(ItemType.TREASURE);
     private void FilterMaterials() => shopController.ShowItemsOfType(ItemType.MATERIAL);
     private void FilterConsumables() => shopController.ShowItemsOfType(ItemType.CONSUMABLE);
 
+    private void OnDisable() => shopController.RemoveObservers();
+
+    public void DeleteItem(Item item) => Destroy(item.gameObject);
+    private void SetTimerText() => timerText.text = shopController.GetTime().ToString();
     public void InitializeShopController(ShopController _controller) => shopController = _controller;
+    public void EmptyShop(List<Item> shopItemList) => shopItemList.ForEach(item => Destroy(item.gameObject));
 
     public GameObject GetItemContainer() => itemContainer;
 }

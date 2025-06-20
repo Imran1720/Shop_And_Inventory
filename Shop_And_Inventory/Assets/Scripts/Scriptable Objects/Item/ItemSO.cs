@@ -4,16 +4,22 @@ using UnityEngine.UI;
 [CreateAssetMenu(menuName = "ScriptableObject/Item", fileName = "Item")]
 public class ItemSO : ScriptableObject
 {
-    public int id;
+    [Header("Description")]
     public string itemName;
     public string itemClassification;
+    [TextArea(3, 10)] public string description;
+
+    [Header("Types")]
     public ItemType itemType;
     public Rarity itemRarity;
+
+    [Header("Icon")]
     public Sprite icon;
-    public int buyingPrice;
-    public int sellingPrice;
+
+    [Header("Numberical Data")]
+    public int id;
     public int weight;
     public int quantity;
-    [TextArea(3, 10)]
-    public string description;
+    public int buyingPrice;
+    public int sellingPrice;
 }

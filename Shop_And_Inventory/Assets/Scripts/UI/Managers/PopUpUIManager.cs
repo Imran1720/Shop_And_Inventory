@@ -36,11 +36,13 @@ public class PopUpUIManager : MonoBehaviour, IBuyPopUpManager
         if (itemData.isShopItem)
         {
             int totalItemCost = itemData.quantity * itemData.buyingPrice;
-            if (totalItemCost <= GameService.instance.UIManager.GetTotalMoney())
+            if (totalItemCost <= GameService.Instance.UIManager.GetTotalMoney())
+            {
                 EventService.Instance.OnItemBought.InvokeEvent(itemData);
+            }
             else
             {
-                GameService.instance.UIManager.ShowOutOfFundNotification();
+                GameService.Instance.UIManager.ShowOutOfFundNotification();
             }
         }
         else
@@ -52,7 +54,6 @@ public class PopUpUIManager : MonoBehaviour, IBuyPopUpManager
 
     public void OnShopRefresh(ItemData _data)
     {
-
         if (itemData.isShopItem)
         {
             ClosePopUp();
@@ -80,8 +81,9 @@ public class PopUpUIManager : MonoBehaviour, IBuyPopUpManager
         popUpPanelBG.enabled = false;
         popUpPanel.SetActive(false);
     }
-    public void ShowPopUp()
+    public void ShowPopUp(ItemData _itemData, int _itemCount)
     {
+        SetData(_itemData, _itemCount);
         popUpPanelBG.enabled = true;
         popUpPanel.SetActive(true);
     }

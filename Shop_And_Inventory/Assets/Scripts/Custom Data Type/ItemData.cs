@@ -1,16 +1,19 @@
 using UnityEngine;
 public struct ItemData
 {
-    public int id;
     public bool isShopItem;
-    public string itemName;
-    public string itemClassification;
+
+    public int id;
+    public int weight;
+    public int quantity;
+    public int buyingPrice;
+    public int sellingPrice;
+    public string description;
+
     public ItemType itemType;
     public Rarity itemRarity;
     public Sprite icon;
-    public int buyingPrice;
-    public int sellingPrice;
-    public int weight;
-    public int quantity;
-    public string description;
+
+    public string itemName;
+    public string itemClassification;
 }

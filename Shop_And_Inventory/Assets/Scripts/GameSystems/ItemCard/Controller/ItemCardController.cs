@@ -12,14 +12,18 @@ public class ItemCardController
 
         itemCardView.SetController(this);
         itemCardModel.SetController(this);
+        AddObservers();
+    }
 
+    public void AddObservers()
+    {
         EventService.Instance.OnShopRefresh.AddListener(OnShopRefresh);
         EventService.Instance.OnShopUpdate.AddListener(SetItem);
         EventService.Instance.OnItemSelected.AddListener(SetItem);
         EventService.Instance.OnItemGathered.AddListener(OnItemGathered);
     }
 
-    ~ItemCardController()
+    public void RemoveObservers()
     {
         EventService.Instance.OnShopRefresh.RemoveListener(OnShopRefresh);
         EventService.Instance.OnShopUpdate.RemoveListener(SetItem);
@@ -37,11 +41,7 @@ public class ItemCardController
     public void RefreshUI()
     {
         ItemData item = itemCardModel.GetCurrentItem();
-
-        itemCardView.RefreshUI(item,
-            itemCardModel.GetBGSprite(item.itemRarity),
-            itemCardModel.GetTitleColor(item.itemRarity),
-            itemCardModel.GetNumberOfItemsToBuy());
+        itemCardView.RefreshUI(item, GetBGSprite(item.itemRarity), GetTitleColor(item.itemRarity), itemCardModel.GetNumberOfItemsToBuy());
     }
 
     public void DecreaseItemCount()
@@ -76,23 +76,54 @@ public class ItemCardController
 
         if (itemQuantity <= 0) return;
 
-        GameService.instance.UIManager.SetBuyPopUpData(item, itemQuantity);
-        GameService.instance.UIManager.ShowBuyPopUp();
+        GameService.Instance.UIManager.ShowBuyPopUp(item, itemQuantity);
     }
 
-    public void Reset()
-    {
-        itemCardModel.SetNumberOfItemsToBuy(1);
-    }
+    public void Reset() => itemCardModel.SetNumberOfItemsToBuy(1);
 
     private void OnShopRefresh(ItemData _item)
     {
-        if (GameService.instance.UIManager.IsShopCardActive())
+        if (GameService.Instance.UIManager.IsShopCardActive())
             SetItem(_item);
     }
     private void OnItemGathered(ItemData _item)
     {
-        if (!GameService.instance.UIManager.IsShopCardActive())
+        if (!GameService.Instance.UIManager.IsShopCardActive())
             SetItem(_item);
+    }
+
+    public Color GetTitleColor(Rarity itemRarity)
+    {
+        switch (itemRarity)
+        {
+            case Rarity.LEGENDARY:
+                return Color.yellow;
+            case Rarity.EPIC:
+                return Color.magenta;
+            case Rarity.RARE:
+                return Color.cyan;
+            case Rarity.COMMON:
+                return Color.green;
+            default:
+                return Color.white;
+        }
+    }
+
+    public Sprite GetBGSprite(Rarity itemRarity)
+    {
+        ItemSpriteSO backgroundSpritesSO = itemCardModel.GetBackgroundSO();
+        switch (itemRarity)
+        {
+            case Rarity.LEGENDARY:
+                return backgroundSpritesSO.legendaryBG;
+            case Rarity.EPIC:
+                return backgroundSpritesSO.epicBG;
+            case Rarity.RARE:
+                return backgroundSpritesSO.rareBG;
+            case Rarity.COMMON:
+                return backgroundSpritesSO.commonBG;
+            default:
+                return backgroundSpritesSO.veryCommonBG;
+        }
     }
 }

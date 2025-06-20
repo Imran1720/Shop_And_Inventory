@@ -8,8 +8,8 @@ public class InventorySpawner : MonoBehaviour
     private InventoryView inventoryView;
 
     [Header("Objects")]
-    [SerializeField] private GameObject inventoryPrefab;
-    [SerializeField] private GameObject itemCardPrefab;
+    [SerializeField] private InventoryView inventoryPrefab;
+    [SerializeField] private Item itemCardPrefab;
     [SerializeField] private ItemDataBase itemDatabase;
 
     [Header("Objects")]
@@ -17,11 +17,15 @@ public class InventorySpawner : MonoBehaviour
 
     private void Start()
     {
-        GameObject inventory = Instantiate(inventoryPrefab) as GameObject;
-        inventory.transform.SetParent(transform, false);
+        CreateInventory();
 
-        inventoryView = inventory.GetComponent<InventoryView>();
-        InventoryModel inventoryModel = new InventoryModel(itemCardPrefab, GameService.instance.GetGameItemList(), maxInvnetoryWeight);
+        InventoryModel inventoryModel = new InventoryModel(itemCardPrefab, GameService.Instance.GetGameItemList(), maxInvnetoryWeight);
         InventoryController controller = new InventoryController(inventoryView, inventoryModel);
+    }
+
+    private void CreateInventory()
+    {
+        inventoryView = Instantiate(inventoryPrefab);
+        inventoryView.transform.SetParent(transform, false);
     }
 }
