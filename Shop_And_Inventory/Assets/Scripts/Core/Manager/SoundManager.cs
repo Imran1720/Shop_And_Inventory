@@ -5,35 +5,16 @@ using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : GenericSingleton<SoundManager>
 {
-    private static SoundManager instance;
-    public static SoundManager Instance { get { return instance; } }
-
     [Header("Audio Sources")]
-    [SerializeField]
-    private AudioSource audioSource_BG;
-    [SerializeField]
-    private AudioSource audioSource_SFX;
+    [SerializeField] private AudioSource audioSource_BG;
+    [SerializeField] private AudioSource audioSource_SFX;
 
     [Header("Audio Clips")]
-    [SerializeField]
-    private SoundType[] soundClips;
+    [SerializeField] private SoundType[] soundClips;
 
-    private void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
-    }
-
-    private void Start()
-    {
-        PlayBGM(Sounds.BGM);
-    }
+    private void Start() => PlayBGM(Sounds.BGM);
 
     private void PlayBGM(Sounds _bgm)
     {

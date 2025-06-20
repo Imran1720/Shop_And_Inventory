@@ -3,44 +3,39 @@ using UnityEngine;
 
 public class ShopModel
 {
-    private GameObject itemCardPrefab;
+    private Item itemCardPrefab;
+    private List<Item> spawnedItemCardsList;
+
     private List<ItemData> allGameItems;
-    private List<GameObject> spawnedItemCardsList;
 
-    public int defaultItemsSpawnCount;
     private int shopRefreshTime;
-    int totalItemsAdded = 0;
+    private int totalItemsAdded = 0;
+    public int defaultItemsSpawnCount;
 
-    private ShopController shopController;
-
-    public ShopModel(GameObject _itemCardPrefab,
-        List<ItemData> _allGameItems,
-         int _defaultItemsSpawnCount,
-         int _shopRefreshTime)
+    public ShopModel(Item _itemCardPrefab, List<ItemData> _allGameItems, int _defaultItemsSpawnCount, int _shopRefreshTime)
     {
-        itemCardPrefab = _itemCardPrefab;
         allGameItems = _allGameItems;
-        defaultItemsSpawnCount = _defaultItemsSpawnCount;
+        itemCardPrefab = _itemCardPrefab;
         shopRefreshTime = _shopRefreshTime;
+        defaultItemsSpawnCount = _defaultItemsSpawnCount;
 
-        spawnedItemCardsList = new List<GameObject>();
+        spawnedItemCardsList = new List<Item>();
     }
 
-    public GameObject GetShopItemCard() => itemCardPrefab;
-    public int GetDefaultSpawnCount() => defaultItemsSpawnCount;
-    public int GetShopRefreshTime() => shopRefreshTime;
     public int GetTotalItemsAdded() => totalItemsAdded;
-    public List<GameObject> GetShopItemsList() => spawnedItemCardsList;
-    public List<ItemData> GetAllItems() => allGameItems;
-
-    public void AddSpawnedItemCardToList(GameObject _newCard) => spawnedItemCardsList.Add(_newCard);
-    public GameObject GetItemCardAtIndex(int _index) => spawnedItemCardsList[_index];
+    public int GetShopRefreshTime() => shopRefreshTime;
     public int GetTotalItemsInGame() => allGameItems.Count;
-    public ItemData GetGameItemAtIndex(int _index) => allGameItems[_index];
-    public GameObject GetFirstItemInShop() => spawnedItemCardsList[0];
-    public void RemoveItemFromShop(GameObject _item) => spawnedItemCardsList.Remove(_item);
-    public void RemoveAllItems() => spawnedItemCardsList.Clear();
-    public void IncrementTotalItemCount() => totalItemsAdded++;
-    public void InitializeShopController(ShopController _controller) => shopController = _controller;
+    public int GetDefaultSpawnCount() => defaultItemsSpawnCount;
 
+    public Item GetShopItemCard() => itemCardPrefab;
+    public Item GetFirstItemInShop() => spawnedItemCardsList[0];
+    public List<Item> GetShopItemsList() => spawnedItemCardsList;
+    public Item GetItemCardAtIndex(int _index) => spawnedItemCardsList[_index];
+
+    public ItemData GetGameItemAtIndex(int _index) => allGameItems[_index];
+
+    public void IncrementTotalItemCount() => totalItemsAdded++;
+    public void EmptyShop() => spawnedItemCardsList.Clear();
+    public void RemoveItemFromList(Item _item) => spawnedItemCardsList.Remove(_item);
+    public void AddSpawnedItemCardToList(Item _newItem) => spawnedItemCardsList.Add(_newItem);
 }

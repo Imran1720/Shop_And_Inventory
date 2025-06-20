@@ -25,12 +25,10 @@ public class NotificationUIManager : MonoBehaviour, INotificationManager
     private string outOfFundMessage;
     private string inventoryFullMessage;
 
-    private bool isNotificationActive;
+    private bool isNotificationActive = false;
 
-    private void Start()
-    {
-        HideNotificationUI();
-    }
+    private void Start() => ToggleNotification(isNotificationActive);
+
     private void Update()
     {
         if (!isNotificationActive) return;
@@ -41,7 +39,7 @@ public class NotificationUIManager : MonoBehaviour, INotificationManager
         if (timer <= 0)
         {
             isNotificationActive = false;
-            HideNotificationUI();
+            ToggleNotification(isNotificationActive);
         }
     }
 
@@ -65,7 +63,6 @@ public class NotificationUIManager : MonoBehaviour, INotificationManager
         notificationText.text = message;
     }
 
-
     public void ShowInventoryFull()
     {
         EnableNotification();
@@ -78,23 +75,17 @@ public class NotificationUIManager : MonoBehaviour, INotificationManager
         notificationText.text = outOfFundMessage;
     }
 
-    private void ShowNotificationUI()
+    private void ToggleNotification(bool isEnabled)
     {
-        notificationBackground.enabled = true;
-        notificationSliderObject.SetActive(true);
-        notificationTextObject.SetActive(true);
+        notificationBackground.enabled = isEnabled;
+        notificationSliderObject.SetActive(isEnabled);
+        notificationTextObject.SetActive(isEnabled);
     }
 
-    private void HideNotificationUI()
-    {
-        notificationBackground.enabled = false;
-        notificationSliderObject.SetActive(false);
-        notificationTextObject.SetActive(false);
-    }
     private void EnableNotification()
     {
         SoundManager.Instance.PlaySoundFX(Sounds.NOTIFICATION);
-        ShowNotificationUI();
+        ToggleNotification(true);
         ResetData();
     }
 }

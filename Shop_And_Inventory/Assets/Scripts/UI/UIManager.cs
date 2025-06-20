@@ -40,16 +40,12 @@ public class UIManager : MonoBehaviour
         EventService.Instance.OnShopRefresh.RemoveListener(OnShopRefresh);
     }
 
-    private void Start()
-    {
-        notificationUIManager.SetData(notificationDuration, outOfFundMessage, inventoryFullMessage);
-    }
+    private void Start() => notificationUIManager.SetData(notificationDuration, outOfFundMessage, inventoryFullMessage);
 
     private void OnItemBought(ItemData _data) => notificationUIManager.ShowNotification($"You bought a {_data.itemName}");
     private void OnItemSold(ItemData _data) => notificationUIManager.ShowNotification($"You sold a {_data.itemName}");
     private void OnItemSelected(ItemData _data) => itemCardUIManager.OnItemSelected(_data.isShopItem);
     private void OnShopRefresh(ItemData _data) => buyPopUpUIManager.OnShopRefresh(_data);
-
 
     //Notification UI
     public void ShowInventoryFullNotification() => notificationUIManager.ShowInventoryFull();
@@ -64,7 +60,6 @@ public class UIManager : MonoBehaviour
     public bool IsShopCardActive() => itemCardUIManager.IsShopCardActive();
 
     //Buy Pop-UP UI
-    public void SetBuyPopUpData(ItemData _data, int _itemCount) => buyPopUpUIManager.SetData(_data, _itemCount);
-    public void ShowBuyPopUp() => buyPopUpUIManager.ShowPopUp();
+    public void ShowBuyPopUp(ItemData _data, int _itemCount) => buyPopUpUIManager.ShowPopUp(_data, _itemCount);
 
 }

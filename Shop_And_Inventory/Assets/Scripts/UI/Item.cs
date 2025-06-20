@@ -25,12 +25,7 @@ public class Item : MonoBehaviour, IPointerDownHandler
     {
         itemIcon.sprite = item.icon;
         itemCount.text = item.quantity.ToString();
-        containerImage.sprite = GameService.instance.GetButtonRarity(item.itemRarity);
-    }
-
-    public ItemType GetItemType()
-    {
-        return currentItemData.itemType;
+        containerImage.sprite = GameService.Instance.GetButtonRarity(item.itemRarity);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -45,7 +40,7 @@ public class Item : MonoBehaviour, IPointerDownHandler
         itemCount.text = count.ToString();
     }
 
-
+    public ItemType GetItemType() => currentItemData.itemType;
 }
 
 

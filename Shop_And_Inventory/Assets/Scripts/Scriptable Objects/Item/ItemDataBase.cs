@@ -5,6 +5,6 @@ public class ItemDataBase : ScriptableObject
 {
     public ItemSO[] weaponsList;
     public ItemSO[] materialList;
-    public ItemSO[] ConsumableList;
     public ItemSO[] treasureList;
+    public ItemSO[] ConsumableList;
 }
