@@ -4,7 +4,13 @@ After diving deep into key design patterns at Outscal (Singleton, Service Locato
 
 Here’s what I built 👇
 
-### 🛒 SHOP SYSTEM :
+## Gameplay
+click on following image to view gameplay.
+[![Image](https://github.com/user-attachments/assets/ce37468e-b118-4909-9cfb-f1abdbe47146)](https://drive.google.com/file/d/1417QwUJjJ7-uqE0mMrpHE0h4NrzbBSjr/view?usp=sharing)
+
+---
+
+### 🛒 Shop System :
 <ol>
 <li>Items categorized by type: <b>Weapon</b>, <b>Treasure</b>, <b>Material</b>, <b>Consumable</b>, or <b>All</b></li>
 <li>Items come with rarity (Very Common ➡️ Legendary), each with a unique visual identity</li>
@@ -13,13 +19,17 @@ Here’s what I built 👇
 <li>Item filters, scalable UI, and item highlight system</li>
 </ol>
 
-### 🎒 INVENTORY SYSTEM :
+---
+
+### 🎒 Inventory System :
 <ol>
 <li><b>100 kg weight cap</b> – can’t gather or buy beyond it</li>
 <li>Items are gathered <b>randomly (1-3 at a time)</b> from a ScriptableObject-driven database</li>
 <li><b>Buying/selling</b> affects coin balance and inventory weight in real-time</li>
 <li>UI dynamically updates selected item in an ItemCard with detailed info and contextual buy/sell option</li>
 </ol>
+
+---
 
 ## 🎯 How I Applied Design Patterns:
 <ol>
@@ -28,6 +38,8 @@ Here’s what I built 👇
   <li><b>MVC:</b> Used extensively in <b>Shop UI</b>, <b>Inventory UI</b>, and <b>ItemCard system</b> to separate logic, visuals, and behavior for modular, scalable design</li>
   <li><b>Observer:</b> Powers the <b>pop-up notification system (bought item, insufficient coins, full inventory)</b> and updates on item selection</li>
 </ol>
+
+---
 
 ## 🧠 What I Learned:
 Initially, I rushed to get a working prototype. But the real challenge came during refactoring — implementing design patterns after-the-fact is tough. This experience taught me the value of architectural planning early on.
